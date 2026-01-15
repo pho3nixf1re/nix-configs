@@ -1,0 +1,52 @@
+~*
+.quokka
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+ehthumbs.db
+Thumbs.db
+
+# IDE generated files #
+#######################
+.project
+.settings
+.redcar
+*.sublime-project
+*.sublime-workspace
+.tags
+.tags_sorted_by_file
+.gemtags
+.idea
+.vscode
+
+database-mysql.yml
+database-mysql2.yml
+
+.bundle

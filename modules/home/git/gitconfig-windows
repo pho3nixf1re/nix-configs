@@ -1,0 +1,13 @@
+[include]
+  path = ~/.config/git/gitconfig
+
+[credential]
+  helper = manager
+
+# [gpg "ssh"]
+  # This does not work. This has to be a full path which includes the local
+  # username and will thus be non-portable. Define this in .gitconfig-local.
+  # program = "~/AppData/Local/1Password/app/8/op-ssh-sign.exe"
+
+[core]
+  sshCommand = C:/Windows/System32/OpenSSH/ssh.exe

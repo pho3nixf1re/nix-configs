@@ -1,0 +1,25 @@
+# Nix build outputs
+result
+result-*
+
+# Nix development shells
+.direnv/
+.envrc
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local configuration overrides
+*.local
+
+# Backup files
+*.bak
+*.backup

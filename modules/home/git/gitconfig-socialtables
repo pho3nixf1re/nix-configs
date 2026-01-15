@@ -1,0 +1,10 @@
+[user]
+  name = Matthew Turney
+  email = mturney@cvent.com
+
+[core]
+  sshCommand = ssh -F ~/.ssh/ssh_config_cvent
+
+# Used to include signing key specific to Social Tables and Cvent
+[include]
+  path = ~/.config/git/.gitconfig-socialtables-local
