@@ -2,7 +2,8 @@
   path = ~/.config/git/gitconfig
 
 [credential]
-  helper = manager
+  helper = /run/current-system/sw/bin/git-credential-manager
+  credentialStore = secretservice
 
 [merge]
   tool = vim

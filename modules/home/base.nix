@@ -115,6 +115,7 @@
 
   home.packages = with pkgs; [
     git
+    git-credential-manager
     ripgrep
     jq
     libreoffice

@@ -10,12 +10,26 @@ in
 
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      Host *
-          IdentityAgent ${onePassPath}
-    '';
+    enableDefaultConfig = false;
     includes = [
       "~/.ssh/config.d/*"
     ];
+
+    matchBlocks."*" = {
+      forwardAgent = false;
+      addKeysToAgent = "no";
+      compression = false;
+      serverAliveInterval = 0;
+      serverAliveCountMax = 3;
+      hashKnownHosts = false;
+      userKnownHostsFile = "~/.ssh/known_hosts";
+      controlMaster = "no";
+      controlPath = "~/.ssh/master-%r@%n:%p";
+      controlPersist = "no";
+      identityAgent = "${onePassPath}";
+    };
   };
+
+  # ssh-agent is handled by 1password.
+  # services.ssh-agent.enable = true;
 }
