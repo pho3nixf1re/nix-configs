@@ -18,6 +18,61 @@
     "flakes"
   ];
 
+  boot.supportedFilesystems = [ "ntfs" ];
+
+  # Auto-mount NTFS drives at boot (using labels for stability)
+  fileSystems."/run/media/pho3nixf1re/Sabrent Rocket 2TB" = {
+    device = "/dev/disk/by-label/Sabrent\\x20Rocket\\x202TB";
+    fsType = "ntfs3";
+    options = [
+      "rw"
+      "uid=1000"
+      "gid=100"
+      "dmask=022"
+      "fmask=133"
+      "nofail"
+    ];
+  };
+
+  fileSystems."/run/media/pho3nixf1re/850 Evo" = {
+    device = "/dev/disk/by-label/850\\x20Evo";
+    fsType = "ntfs3";
+    options = [
+      "rw"
+      "uid=1000"
+      "gid=100"
+      "dmask=022"
+      "fmask=133"
+      "nofail"
+    ];
+  };
+
+  fileSystems."/run/media/pho3nixf1re/WD 5000" = {
+    device = "/dev/disk/by-label/WD\\x205000";
+    fsType = "ntfs3";
+    options = [
+      "rw"
+      "uid=1000"
+      "gid=100"
+      "dmask=022"
+      "fmask=133"
+      "nofail"
+    ];
+  };
+
+  fileSystems."/run/media/pho3nixf1re/OCZ Vertex4" = {
+    device = "/dev/disk/by-label/OCZ\\x20Vertex4";
+    fsType = "ntfs3";
+    options = [
+      "rw"
+      "uid=1000"
+      "gid=100"
+      "dmask=022"
+      "fmask=133"
+      "nofail"
+    ];
+  };
+
   networking.hostName = "pho3nixf1re-nixos";
 
   # Enable networking
