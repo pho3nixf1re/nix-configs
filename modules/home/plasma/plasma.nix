@@ -62,11 +62,18 @@
     };
 
     shortcuts = {
-      kwin = {
-        "Launch" = "Meta+Space";
-      };
-      kwin = {
-        "Switch to Next Keyboard Layout" = "Meta+Alt+Space";
+      "services/org.kde.krunner.desktop"._launch = [
+        "Search"
+        "Meta+Space"
+      ];
+      yakuake.toggle-window-state = "Ctrl+Space";
+      "KDE Keyboard Layout Switcher"."Switch to Next Keyboard Layout" = "Meta+Alt+Shift";
+    };
+
+    configFile = {
+      kwinrc.TabBox = {
+        HighlightWindows = false;
+        LayoutName = "big_icons";
       };
     };
   };
