@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories=Utility;
+Comment=Use the keyboard, mouse, or trackpad of one computer to control nearby computers.
+Exec=flatpak run --branch=master --arch=x86_64 --command=electron-wrapper --file-forwarding com.symless.synergy @@u %U @@
+Icon=com.symless.synergy
+Name=Synergy
+StartupWMClass=Synergy
+Terminal=false
+Type=Application
+X-Flatpak=com.symless.synergy

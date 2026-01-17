@@ -63,55 +63,8 @@
     };
   };
 
-  programs.plasma = {
-    enable = true;
-
-    powerdevil = {
-      AC = {
-        powerButtonAction = "shutDown";
-        autoSuspend = {
-          action = "sleep";
-          idleTimeout = 7200;
-        };
-        turnOffDisplay = {
-          idleTimeout = 3600;
-          idleTimeoutWhenLocked = 300;
-        };
-        dimDisplay = {
-          enable = true;
-          idleTimeout = 1800;
-        };
-        powerProfile = "performance";
-        whenSleepingEnter = "standbyThenHibernate";
-      };
-    };
-
-    input.keyboard = {
-      layouts = [
-        {
-          layout = "us";
-          variant = "dvorak";
-          displayName = "dv";
-        }
-        {
-          layout = "us";
-          displayName = "qw";
-        }
-      ];
-      options = [ "caps:escape" ];
-      numlockOnStartup = "on";
-    };
-
-    kscreenlocker = {
-      lockOnResume = false;
-      timeout = 10;
-    };
-
-    # FIXME: This does not seem to work.
-    # krunner = {
-    #   shortcuts.launch = "Meta+Space";
-    # };
-  };
+  # Allows home-manager to manage xdg settings and config files.
+  xdg.enable = true;
 
   home.packages = with pkgs; [
     git

@@ -1,9 +1,12 @@
 { pkgs, ... }:
 {
+  xdg.configFile = {
+    "zsh/git.zsh".source = ./git.zsh;
+    "git/gitconfig".source = ./gitconfig;
+    "git/config".source = if pkgs.stdenv.isLinux then ./gitconfig-linux else ./gitconfig-darwin;
+  };
+
   home.file = {
-    ".config/zsh/git.zsh".source = ./git.zsh;
-    ".config/git/gitconfig".source = ./gitconfig;
-    ".config/git/config".source = if pkgs.stdenv.isLinux then ./gitconfig-linux else ./gitconfig-darwin;
     ".gitignore".source = ./gitignore;
   };
 }
