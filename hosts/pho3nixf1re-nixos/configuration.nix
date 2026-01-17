@@ -151,6 +151,15 @@
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
+
+  # Configure sudo timeout
+  security.sudo = {
+    enable = true;
+    extraConfig = ''
+      Defaults timestamp_timeout=60
+    '';
+  };
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
