@@ -145,6 +145,9 @@
   # Fixes error "Failed to start Refresh fwupd metadata and update motd." when rebuilding.
   services.fwupd.enable = true;
 
+  # Used to remap mouse buttons and other things.
+  services.input-remapper.enable = true;
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -196,8 +199,6 @@
   environment.systemPackages = with pkgs; [
     # Flakes clones its dependencies through the git command, so git must be installed first.
     git
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
   ];
 
   programs.zsh.enable = true;
