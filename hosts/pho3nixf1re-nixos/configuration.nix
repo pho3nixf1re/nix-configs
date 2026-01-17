@@ -222,6 +222,8 @@
     polkitPolicyOwners = [ "pho3nixf1re" ];
   };
 
+  hardware.bluetooth.enable = true;
+
   # Support for the xbox controller USB dongle.
   hardware.xone.enable = true;
   programs.steam = {
