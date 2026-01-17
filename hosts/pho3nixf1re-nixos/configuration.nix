@@ -177,6 +177,7 @@
     ];
     packages = with pkgs; [
       kdePackages.kate
+      kdePackages.yakuake
       #  thunderbird
     ];
     shell = pkgs.zsh;
