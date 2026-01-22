@@ -1,0 +1,104 @@
+command_timeout = 1000
+
+[character]
+
+[shell]
+disabled=false
+
+[username]
+
+[directory]
+fish_style_pwd_dir_length = 1
+read_only = "  "
+style = "#4169e1"
+truncate_to_repo = true
+truncation_length = 0
+format = "[](bg:$style fg:black)[$path[$read_only]($read_only_style bg:$style)](bg:$style)[](fg:$style) "
+
+[cmd_duration]
+min_time = 50
+show_milliseconds = true
+show_notifications = true
+min_time_to_notify = 20_000
+format = "[ $duration]($style)"
+
+[jobs]
+symbol = " "
+
+# harware config
+[battery]
+
+[[battery.display]]
+threshold = 10
+style = "bold fg:red"
+
+[[battery.display]]
+threshold = 30
+style = "fg:#ff8800"
+
+[[battery.display]]
+threshold = 50
+style = "fg:yellow"
+
+[memory_usage]
+disabled = true
+
+[time]
+disabled = false
+style = "#4169e1"
+format = "[ $time ](fg:$style)"
+
+[status]
+disabled = false
+style = "red"
+symbol = "\\(╯°□°）╯︵ ┻━┻ "
+format = "\b[](bg:$style fg:#4169e1)[$symbol$status](bg:$style)[](fg:$style)"
+
+# VCS
+[git_branch]
+symbol = "  "
+style = "#f05133"
+format = "\b\b[](fg:#4169e1 bg:$style)[$symbol$branch](fg:white bg:$style)[](fg:$style) "
+
+[git_commit]
+style = "#f05133"
+format = "\b\b[ ﰖ $hash](fg:white bg:$style)[](fg:$style) "
+
+[git_state]
+am = "APPLYING-MAILBOX"
+am_or_rebase = "APPLYING-MAILBOX/REBASE"
+style = "#f05133"
+format = "\b\b[ \\($state( $progress_current/$progress_total)\\)](fg:white bg:$style)[](fg:$style) "
+
+[git_status]
+style = "#f05133"
+format = "($all_status$ahead_behind\b )"
+conflicted = "[ ](fg:88)[   ${count} ](fg:white bg:88)[ ](fg:88)"
+staged = "[M$count ](fg:green)"
+modified = "[M${count} ](fg:red)"
+renamed = "[R${count} ](fg:208)"
+deleted = "[ ${count} ](fg:208)"
+untracked = "[?${count} ](fg:red)"
+stashed = " ${count} "
+ahead = "[ ${count} ](fg:purple)"
+behind = "[ ${count} ](fg:yellow)"
+diverged = "[](fg:88)[  נּ ](fg:white bg:88)[ ${ahead_count} ](fg:purple bg:88)[ ${behind_count} ](fg:yellow bg:88)[ ](fg:88)"
+
+[docker_context]
+disabled = true
+
+[shlvl]
+disabled = false
+style = "fg:bright-blue"
+symbol = " "
+
+[env_var]
+# variable = "EDITOR"
+# format = "editing with [$env_value]($style)"
+
+[aws]
+symbol = " "
+format = 'on [$symbol$profile(\($region\))]($style) '
+
+[package]
+display_private = true

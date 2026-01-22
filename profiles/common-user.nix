@@ -7,6 +7,7 @@
     ../modules/home/gaming-tools.nix
     ../modules/home/ssh/ssh.nix
     ../modules/home/zsh/zsh.nix
+    ../modules/home/starship/starship.nix
     ../modules/home/plasma/plasma.nix
     ../modules/home/smb/smb.nix
   ];

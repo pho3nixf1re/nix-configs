@@ -1,11 +1,53 @@
-{ config, lib, ... }:
+{ lib, pkgs, ... }:
 
+let
+  inherit (pkgs.stdenv) isDarwin;
+in
 {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+
+    oh-my-zsh = {
+      enable = true;
+      # Disable oh-my-zsh theme (using starship instead)
+      # theme = "";
+      plugins = [
+        "brew"
+        "asdf"
+        "gpg-agent"
+        "vi-mode"
+        "tmux"
+        "autojump"
+        "encode64"
+        "extract"
+        "urltools"
+        "git"
+        "git-extras"
+        "gitignore"
+        "git-escape-magic"
+        "docker"
+        "docker-compose"
+        "node"
+        "npm"
+        "yarn"
+        "python"
+        "pip"
+      ]
+      ++ lib.optionals isDarwin [ "macos" ];
+    };
+
+    initExtra = ''
+      # Load OS detection variables
+      source ${./os-detection.zsh}
+
+      # Load additional configuration from conf.d
+      for zshSource in ~/.config/zsh/conf.d/*.zsh; do
+        source "$zshSource"
+      done
+    '';
   };
 
   xdg.configFile = builtins.listToAttrs (
@@ -16,10 +58,4 @@
       };
     }) (builtins.attrNames (builtins.readDir ./conf.d))
   );
-
-  programs.starship = lib.mkIf config.programs.zsh.enable {
-    enable = true;
-  };
-
-  home.shell.enableZshIntegration = true;
 }
