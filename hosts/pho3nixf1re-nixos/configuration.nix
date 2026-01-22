@@ -218,12 +218,12 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
   # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     # Flakes clones its dependencies through the git command, so git must be installed first.
     git
+    # Allows global menu to function in KDE Plasma for some apps (eg. VS Code).
+    libdbusmenu
   ];
 
   programs.zsh.enable = true;

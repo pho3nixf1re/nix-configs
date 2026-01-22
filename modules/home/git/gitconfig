@@ -6,8 +6,6 @@
 # Used to include signing key
 [include]
   path = ~/.config/git/gitconfig-local
-[includeIf "gitdir:~/Workspace/socialtables/"]
-  path = ~/.config/git/gitconfig-socialtables
 [core]
   filemode = true
   excludesfile = ~/.gitignore
