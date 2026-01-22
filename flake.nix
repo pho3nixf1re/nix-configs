@@ -16,6 +16,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -23,6 +27,7 @@
       nixpkgs,
       home-manager,
       plasma-manager,
+      sops-nix,
       ...
     }:
     {
@@ -35,7 +40,10 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
-              home-manager.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+              home-manager.sharedModules = [
+                plasma-manager.homeModules.plasma-manager
+                sops-nix.homeManagerModules.sops
+              ];
               home-manager.users.pho3nixf1re =
                 { ... }:
                 {
@@ -54,6 +62,7 @@
 
         homeConfigurations."deck@steamdeck" = home-manager.lib.homeManagerConfiguration {
           modules = [
+            sops-nix.homeManagerModules.sops
             ./hosts/steam-deck/home.nix
             ./profiles/common-user.nix
             ./profiles/dev.nix

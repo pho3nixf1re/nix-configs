@@ -158,6 +158,21 @@
     extraConfig = ''
       Defaults timestamp_timeout=60
     '';
+    extraRules = [
+      {
+        users = [ "pho3nixf1re" ];
+        commands = [
+          {
+            command = "${pkgs.cifs-utils}/bin/mount.cifs";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "${pkgs.util-linux}/bin/umount";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
   };
 
   services.pipewire = {

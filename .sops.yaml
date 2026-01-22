@@ -1,0 +1,7 @@
+keys:
+  - &pho3nixf1re age1nhnt4lldeztx3q8tc2nvj0zv3nq008ruw5k5zp85d9d2lprfqqqsg89v9a
+creation_rules:
+  - path_regex: secrets/smb\.yaml$
+    key_groups:
+      - age:
+          - *pho3nixf1re

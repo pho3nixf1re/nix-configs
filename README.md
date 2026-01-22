@@ -34,10 +34,25 @@ A single Nix flake–based repository supporting:
 
 ## Quick Start
 
+### First Time Setup
+
+Before building, set up secrets from 1Password:
+
+```bash
+# Run the secrets setup script
+./setup-smb-secrets.sh
+```
+
+This script:
+- Generates encryption keys from your SSH key
+- Pulls SMB credentials from 1Password
+- Creates local encrypted secrets (not committed to git)
+- Can be re-run anytime to refresh secrets
+
 ### On NixOS
 
 ```bash
-sudo nixos-rebuild switch --flake .#desktop
+sudo nixos-rebuild switch --flake .#pho3nixf1re-nixos
 ```
 
 ### On SteamOS or other distros
@@ -47,6 +62,10 @@ nix run home-manager/master -- switch --flake .#deck@steamdeck
 ```
 
 ## Documentation
+
+- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Design principles & patterns
+- **[AGENTS.md](docs/AGENTS.md)** - Instructions for AI/human agents
+- **[SECRETS.md](docs/SECRETS.md)** - Secrets management with 1Password & sops-nix
 
 - [Architecture & Design](docs/ARCHITECTURE.md) - Design principles and module patterns
 - [Agent Instructions](docs/AGENTS.md) - Guidelines for contributing (human & AI)
