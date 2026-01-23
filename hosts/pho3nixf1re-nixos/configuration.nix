@@ -13,6 +13,10 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Prevents warning when running `nixos-rebuild switch`. See:
+  # - https://github.com/NixOS/nix/issues/11728
+  # - https://github.com/NixOS/nix/pull/14614
+  nix.settings.download-buffer-size = 524288000;
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
