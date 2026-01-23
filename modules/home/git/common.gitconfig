@@ -3,15 +3,14 @@
   email = matthew.a.turney@gmail.com
   logallrefupdates = true
   useconfigonly = true
-# Used to include signing key
 [include]
-  path = ~/.config/git/gitconfig-local
+  path = ~/.config/git/local.gitconfig
 [core]
   filemode = true
   excludesfile = ~/.gitignore
   editor = vim -f
   disambiguate = commit
-  pager = delta
+  # pager = delta
   ignorecase = false
 [merge]
   tool = code

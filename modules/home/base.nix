@@ -51,10 +51,14 @@
   xdg.enable = true;
 
   home.packages = with pkgs; [
+    # CLI tools.
     git
     git-credential-manager
     ripgrep
     jq
+    nnn
+
+    # Desktop apps.
     libreoffice
     discord
     protonvpn-gui
@@ -65,8 +69,8 @@
 
     # nix related
     #
-    # it provides the command `nom` works just like `nix`
-    # with more details log output
+    # It provides the command `nom` works just like `nix`
+    # with more detailed log output.
     nix-output-monitor
   ];
 }

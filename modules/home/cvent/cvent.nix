@@ -6,14 +6,13 @@ _: {
   home.file.".ssh/ssh_config_cvent".source = ./ssh_config_cvent;
 
   xdg.configFile = {
-    "git/gitconfig-cvent".source = ./gitconfig-cvent;
+    "git/cvent.gitconfig".source = ./cvent.gitconfig;
   };
 
   programs.git.extraConfig = {
-    includeIf."gitdir:~/Workspace/socialtables/".path = "~/.config/git/gitconfig-cvent";
+    includeIf."gitdir:~/Workspace/socialtables/".path = "~/.config/git/cvent.gitconfig";
   };
 
-  # Configure SSH public key extraction from 1Password
   ssh.onePasswordKeys.cvent = {
     onePasswordPath = "op://Cvent/Github SSH Key - Cvent/public key";
     outputPath = ".ssh/cvent.pub";

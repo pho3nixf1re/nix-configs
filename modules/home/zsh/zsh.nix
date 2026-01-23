@@ -12,7 +12,7 @@ in
 
     oh-my-zsh = {
       enable = true;
-      # Disable oh-my-zsh theme (using starship instead)
+      # Disable oh-my-zsh theme, using starship instead.
       # theme = "";
       plugins = [
         "brew"
@@ -39,7 +39,7 @@ in
       ++ lib.optionals isDarwin [ "macos" ];
     };
 
-    initExtra = ''
+    initContent = ''
       # Load OS detection variables
       source ${./os-detection.zsh}
 
@@ -50,6 +50,7 @@ in
     '';
   };
 
+  # Copy all conf.d files to be sourced by zsh.
   xdg.configFile = builtins.listToAttrs (
     builtins.map (filename: {
       name = "zsh/conf.d/${filename}";

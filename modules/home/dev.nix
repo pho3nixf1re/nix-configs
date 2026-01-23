@@ -2,6 +2,8 @@
 
 {
   programs.vscode.enable = true;
+  # For native wayland support for VS Code and any other Electron apps.
+  home.sessionVariables.NIXOS_OZONE_WL = "1";
 
   programs.neovim = {
     enable = true;
