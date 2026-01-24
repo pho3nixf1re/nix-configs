@@ -11,7 +11,7 @@ let
   macosAgentSock = "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
 in
 {
-  xdgConfig.file = {
+  xdg.configFile = {
     "1Password/ssh".source = ./agent.toml;
   };
 
@@ -24,6 +24,11 @@ in
   };
 
   home.sessionVariables = {
+    SSH_AUTH_SOCK = agentSock;
+  };
+
+  # This fixes on linux where VS Code cannot find the SSH agent socket.
+  systemd.user.sessionVariables = {
     SSH_AUTH_SOCK = agentSock;
   };
 }

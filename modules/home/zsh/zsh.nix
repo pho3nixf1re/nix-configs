@@ -17,7 +17,6 @@ in
       plugins = [
         "brew"
         "asdf"
-        "gpg-agent"
         "vi-mode"
         "tmux"
         "autojump"

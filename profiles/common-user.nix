@@ -9,7 +9,8 @@
     ../modules/home/zsh/zsh.nix
     ../modules/home/starship/starship.nix
     ../modules/home/plasma/plasma.nix
-    ../modules/home/smb/smb.nix
+    ../modules/home/feliciterra-fileshares.nix
+    ../modules/home/1password/1password.nix
   ];
 
   home.username = "pho3nixf1re";

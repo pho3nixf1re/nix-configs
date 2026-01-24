@@ -57,7 +57,7 @@ in
     sops.secrets = mapAttrs' (
       name: mount:
       nameValuePair "smb/${name}/credentials" {
-        sopsFile = ../../../secrets/smb.yaml;
+        sopsFile = ../../secrets/smb.yaml;
         mode = "0600";
       }
     ) cfg.mounts;
