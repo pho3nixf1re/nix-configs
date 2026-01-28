@@ -37,4 +37,27 @@
   # TODO: Link Windows gitconfig from WSL to Windows home path.
   # This should be a /mnt/c/Users/{username} path. Something like:
   # "/mnt/c/Users/{username}/.config/git/config".source = ./windows.gitconfig;
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      side-by-side = true;
+      line-numbers = true;
+      syntax-theme = "Solarized (dark)";
+      features = "decorations";
+      decorations = {
+        commit-decoration-style = "blue ol";
+        commit-style = "raw";
+        file-style = "omit";
+        hunk-header-decoration-style = "blue box";
+        hunk-header-file-style = "red";
+        hunk-header-line-number-style = "#067a00";
+        hunk-header-style = "file line-number syntax";
+      };
+      interactive = {
+        keep-plus-minus-markers = false;
+      };
+    };
+  };
 }

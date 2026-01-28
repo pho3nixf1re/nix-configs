@@ -10,7 +10,6 @@
   excludesfile = ~/.gitignore
   editor = vim -f
   disambiguate = commit
-  # pager = delta
   ignorecase = false
 [merge]
   tool = code
@@ -46,22 +45,6 @@
   showPatch = true
 [diff]
   compactionHeuristic = true
-[interactive]
-  diffFilter = delta --color-only --features=interactive
-[delta]
-  features = decorations
-  side-by-side = true
-  line-numbers = true
-[delta "interactive"]
-  keep-plus-minus-markers = false
-[delta "decorations"]
-  commit-decoration-style = blue ol
-  commit-style = raw
-  file-style = omit
-  hunk-header-decoration-style = blue box
-  hunk-header-file-style = red
-  hunk-header-line-number-style = "#067a00"
-  hunk-header-style = file line-number syntax
 [color "diff-highlight"]
   oldNormal = red bold
   oldHighlight = red bold 52
