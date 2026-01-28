@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Duplicati Tray
+Comment=Duplicati backup system tray agent
+Exec=duplicati --no-hosted-server --read-config-from-db --server-datafolder=/home/pho3nixf1re/.local/share/duplicati
+Icon=duplicati
+Terminal=false
+X-GNOME-Autostart-enabled=true
+X-KDE-autostart-after=panel
+Hidden=false
+NoDisplay=false
