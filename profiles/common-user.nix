@@ -11,6 +11,7 @@
     ../modules/home/plasma/plasma.nix
     ../modules/home/feliciterra-fileshares.nix
     ../modules/home/1password/1password.nix
+    ../modules/home/duplicati/duplicati.nix
   ];
 
   home.username = "pho3nixf1re";
@@ -27,6 +28,8 @@
       mountPoint = "mnt/feliciterra";
     };
   };
+
+  services.duplicati.enable = true;
 
   # Configure sops
   sops = {
