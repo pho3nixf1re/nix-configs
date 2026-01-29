@@ -226,8 +226,23 @@
   environment.systemPackages = with pkgs; [
     # Flakes clones its dependencies through the git command, so git must be installed first.
     git
+
     # Allows global menu to function in KDE Plasma for some apps (eg. VS Code).
     libdbusmenu
+
+    # Development tools for building software (needed by mise)
+    gcc
+    gnumake
+    pkg-config
+    openssl
+    zlib
+    readline
+    sqlite
+    libffi
+    bzip2
+    ncurses
+    xz
+    tk
   ];
 
   programs.zsh.enable = true;
