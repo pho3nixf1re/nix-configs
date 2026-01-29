@@ -1,9 +1,7 @@
 _: {
-  imports = [
-    ../ssh/1password-key.nix
-  ];
-
+  # Gitconfig for Cvent work points ssh command to this file.
   home.file.".ssh/ssh_config_cvent".source = ./ssh_config_cvent;
+  home.file.".ssh/cvent.pub".source = ./public-keys/cvent.pub;
 
   xdg.configFile = {
     "git/cvent.gitconfig".source = ./cvent.gitconfig;
@@ -11,10 +9,5 @@ _: {
 
   programs.git.extraConfig = {
     includeIf."gitdir:~/Workspace/socialtables/".path = "~/.config/git/cvent.gitconfig";
-  };
-
-  ssh.onePasswordKeys.cvent = {
-    onePasswordPath = "op://Cvent/Github SSH Key - Cvent/public key";
-    outputPath = ".ssh/cvent.pub";
   };
 }
