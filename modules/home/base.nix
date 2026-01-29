@@ -67,6 +67,10 @@
     autojump
     tmux
 
+    # Runtimes.
+    nodejs
+    python3
+
     # nix related
     #
     # It provides the command `nom` works just like `nix`

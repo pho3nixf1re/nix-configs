@@ -272,6 +272,46 @@
 
   programs.java.enable = true;
 
+  # Enable nix-ld to run unpatched binaries on NixOS (needed for mise and other tools)
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      # Common libraries that pre-built binaries need
+      glibc
+      libgcc
+
+      # Python build dependencies
+      bzip2
+      libffi
+      readline
+      sqlite
+      xz
+      ncurses
+
+      # Default libraries included.
+      zlib
+      zstd
+      stdenv.cc.cc
+      curl
+      openssl
+      attr
+      libssh
+      bzip2
+      libxml2
+      acl
+      libsodium
+      util-linux
+      xz
+      systemd
+    ];
+  };
+
+  services = {
+    envfs = {
+      enable = true;
+    };
+  };
+
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
   ];
