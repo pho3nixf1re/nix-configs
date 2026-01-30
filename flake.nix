@@ -20,6 +20,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -28,6 +32,7 @@
       home-manager,
       plasma-manager,
       sops-nix,
+      nix-darwin,
       ...
     }:
     {
@@ -66,6 +71,28 @@
             ./hosts/steam-deck/home.nix
             ./profiles/common-user.nix
             ./profiles/dev.nix
+          ];
+        };
+      };
+
+      darwinConfigurations = {
+        cvent-macos = nix-darwin.lib.darwinSystem {
+          modules = [
+            ./hosts/cvent-macos/configuration.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
+              home-manager.sharedModules = [
+                sops-nix.homeManagerModules.sops
+              ];
+              home-manager.users.mturney = {
+                imports = [
+                  ./profiles/cvent.nix
+                ];
+              };
+            }
           ];
         };
       };

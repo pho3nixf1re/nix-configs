@@ -1,8 +1,9 @@
-# NixOS + SteamOS Unified Configuration
+# NixOS + macOS + SteamOS Unified Configuration
 
 A single Nix flake–based repository supporting:
 
 - **Full NixOS system configurations**
+- **nix-darwin macOS system configurations**
 - **Portable Home Manager configurations** for SteamOS (Arch + KDE Plasma) and other non-NixOS distros
 
 ## Repository Structure
@@ -61,6 +62,18 @@ sudo nixos-rebuild switch --flake .#pho3nixf1re-nixos
 nix run home-manager/master -- switch --flake .#deck@steamdeck
 ```
 
+### On macOS with nix-darwin
+
+First time setup requires installing nix-darwin:
+
+```bash
+# Build and activate the darwin configuration
+nix run nix-darwin -- switch --flake .#cvent-macos
+
+# After first activation, use darwin-rebuild for subsequent builds
+darwin-rebuild switch --flake .#cvent-macos
+```
+
 ## Documentation
 
 - **[ARCHITECTURE.md](docs/ARCHITECTURE.md)** - Design principles & patterns
@@ -74,7 +87,8 @@ nix run home-manager/master -- switch --flake .#deck@steamdeck
 
 | Configuration | Type | Target | Profiles |
 |--------------|------|--------|----------|
-| `desktop` | NixOS | Full desktop system | common-user + dev + desktop-system |
+| `pho3nixf1re-nixos` | NixOS | Full desktop system | common-user + dev + desktop-system |
+| `cvent-macos` | nix-darwin | macOS work system | cvent |
 | `deck@steamdeck` | Home Manager | Steam Deck user config | common-user + dev |
 
 ## License
