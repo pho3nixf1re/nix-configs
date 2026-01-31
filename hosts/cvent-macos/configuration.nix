@@ -72,13 +72,13 @@
     };
 
     controlcenter = {
-      AirDrop = true;
+      AirDrop = false;
       BatteryShowPercentage = true;
-      Bluetooth = true;
-      Display = true;
-      FocusModes = true;
+      Bluetooth = false;
+      Display = false;
+      FocusModes = false;
       NowPlaying = true;
-      Sound = true;
+      Sound = false;
     };
 
     NSGlobalDomain = {
