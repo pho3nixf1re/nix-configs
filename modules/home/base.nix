@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   programs.fastfetch = {
@@ -53,21 +53,18 @@
   home.packages = with pkgs; [
     # CLI tools.
     git
-    git-credential-manager
+    gh
     ripgrep
     jq
     nnn
-
-    # Desktop apps.
-    libreoffice
-    discord
-    protonvpn-gui
+    tree
+    eza
 
     # Needed for OH-MY-ZSH plugins.
     autojump
     tmux
 
-    # Runtimes.
+    # Common development runtimes.
     nodejs
     python3
 
@@ -76,5 +73,8 @@
     # It provides the command `nom` works just like `nix`
     # with more detailed log output.
     nix-output-monitor
+  ] ++ lib.optionals stdenv.isLinux [
+    # Linux-only as MacOS has osxkeychain built-in.
+    git-credential-manager
   ];
 }

@@ -28,6 +28,9 @@
     home = "/Users/mturney";
   };
 
+  # Enable Touch ID for sudo
+  security.pam.services.sudo_local.touchIdAuth = true;
+
   # System defaults
   system.defaults = {
     dock = {
@@ -48,7 +51,11 @@
     };
   };
 
-  # Homebrew configuration
+  # Set ZDOTDIR so zsh looks in XDG config location.
+  environment.variables = {
+    ZDOTDIR = "$HOME/.config/zsh";
+  };
+
   homebrew = {
     enable = true;
     onActivation = {
@@ -56,13 +63,20 @@
       # TODO: Don't cleanup unmanaged brews. Change when all brews are managed with nix.
       cleanup = "none";
     };
-    brews = [
-      "gh"
+
+    taps = [
+      "1password/tap"
     ];
+
+    brews = [
+      "zsh"
+    ];
+
     casks = [
       "1password"
-      "1password-cli"
+      "1password/tap/1password-cli"
       "airfoil"
+      "iterm2"
     ];
   };
 }

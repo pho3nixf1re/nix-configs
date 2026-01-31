@@ -1,12 +1,10 @@
 [user]
   name = Matthew Turney
   email = matthew.a.turney@gmail.com
-  logallrefupdates = true
   useconfigonly = true
-[include]
-  path = ~/.config/git/local.gitconfig
 [core]
   filemode = true
+  logallrefupdates = true
   excludesfile = ~/.gitignore
   editor = vim -f
   disambiguate = commit

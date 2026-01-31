@@ -4,6 +4,7 @@
   imports = [
     ../modules/home/base.nix
     ../modules/home/dev.nix
+    ../modules/home/desktop.nix
     ../modules/home/gaming-tools.nix
     ../modules/home/ssh/ssh.nix
     ../modules/home/zsh/zsh.nix

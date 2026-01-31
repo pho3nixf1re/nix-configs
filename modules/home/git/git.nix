@@ -17,7 +17,11 @@
     enable = true;
     settings = lib.mkMerge [
       {
-        include.path = "~/.config/git/common.gitconfig";
+        include.path = [
+          "~/.config/git/common.gitconfig"
+          # Used for local, non-tracked overrides.
+          "~/.config/git/local.gitconfig"
+        ];
       }
 
       # Linux-specific config
@@ -27,7 +31,7 @@
         merge.tool = "vim";
       })
 
-      # macOS-specific config
+      # MacOS-specific config
       (lib.mkIf pkgs.stdenv.isDarwin {
         gpg.ssh.program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
       })
