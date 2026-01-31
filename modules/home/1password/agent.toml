@@ -29,18 +29,7 @@
 # More examples can be found here:
 #  https://developer.1password.com/docs/ssh/agent/config
 [[ssh-keys]]
-item = "24iqgntuhebx22rkuygnyqtaz4"
+vault = "Cvent"
 
 [[ssh-keys]]
-item = "yq35vvfitz23avu2aecqlulkhq"
-
-[[ssh-keys]]
-item = "y3kmunsdtolc55qjj3wpy6xzne"
-
-[[ssh-keys]]
-item = "ujccx75xkmghy3femaisd455sm"
-
-[[ssh-keys]]
-item = "nzljdhsrmoyfgtpplgt63hynwq"
-
-# TODO: update this to include all ssh keys if making pub keys on the fly works.
+vault = "Private"

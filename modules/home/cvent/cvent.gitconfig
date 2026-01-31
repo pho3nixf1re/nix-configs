@@ -7,4 +7,4 @@
 
 # Used to include signing key specific to Social Tables and Cvent
 [include]
-  path = ~/.config/git/.gitconfig-socialtables-local
+  path = ~/.config/git/socialtables-local.gitconfig

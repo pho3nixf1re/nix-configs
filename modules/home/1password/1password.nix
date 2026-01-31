@@ -12,7 +12,7 @@ let
 in
 {
   xdg.configFile = {
-    "1Password/ssh".source = ./agent.toml;
+    "1Password/ssh/agent.toml".source = ./agent.toml;
   };
 
   # Create .1password directory if it does not exist.
