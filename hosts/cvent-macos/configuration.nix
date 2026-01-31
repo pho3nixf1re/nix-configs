@@ -95,6 +95,10 @@
     ZDOTDIR = "$HOME/.config/zsh";
   };
 
+  # Maybe we don't need this with home-manager?
+  # systemPackages = with pkgs; [
+  # ];
+
   homebrew = {
     enable = true;
     onActivation = {
@@ -104,6 +108,7 @@
     };
 
     brews = [
+      # Install zsh here as other programs expect it to be in Homebrew.
       "zsh"
     ];
 
