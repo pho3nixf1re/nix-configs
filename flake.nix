@@ -76,6 +76,7 @@
                   imports = [
                     ./profiles/personal.nix
                     ./profiles/desktop-system.nix
+                    ./profiles/common.nix
                   ];
                 };
 
@@ -90,7 +91,7 @@
             sops-nix.homeManagerModules.sops
             ./hosts/steam-deck/home.nix
             ./profiles/personal.nix
-            ./profiles/dev.nix
+            ./profiles/common.nix
           ];
         };
       };
@@ -100,6 +101,7 @@
           modules = [
             nix-homebrew.darwinModules.nix-homebrew
             ./hosts/cvent-macos/configuration.nix
+            ./modules/darwin/macos-apps.nix
             home-manager.darwinModules.home-manager
             {
               nix-homebrew = {
@@ -130,6 +132,7 @@
               home-manager.users.mturney = {
                 imports = [
                   ./profiles/cvent.nix
+                  ./profiles/common.nix
                 ];
               };
             }

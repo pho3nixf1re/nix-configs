@@ -23,8 +23,6 @@
 
   programs.firefox.enable = true;
 
-  programs.obsidian.enable = true;
-
   # Configure SMB mounts
   services.smb-mounts = {
     enable = true;
