@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  stdenv,
+  ...
+}:
 
 {
   programs.fastfetch = {
@@ -34,47 +39,46 @@
     };
   };
 
-  programs.alacritty = {
+  programs.gpg.enable = true;
+  services.gpg-agent = {
     enable = true;
-    settings = {
-      env.TERM = "xterm-256color";
-      font = {
-        size = 18;
-        draw_bold_text_with_bright_colors = true;
-      };
-      scrolling.multiplier = 5;
-      selection.save_to_clipboard = true;
-    };
+    # Conflicts with ssh-agent and git signing.
+    enableSshSupport = false;
+    enableBashIntegration = true;
+    pinentryPackage = lib.mkIf pkgs.stdenv.isLinux pkgs.pinentry-qt;
   };
 
   # Allows home-manager to manage xdg settings and config files.
   xdg.enable = true;
 
-  home.packages = with pkgs; [
-    # CLI tools.
-    git
-    gh
-    ripgrep
-    jq
-    nnn
-    tree
-    eza
+  home.packages =
+    with pkgs;
+    [
+      # General CLI tools.
+      gh
+      ripgrep
+      jq
+      nnn
+      tree
+      eza
+      httpie
+      curl
 
-    # Needed for OH-MY-ZSH plugins.
-    autojump
-    tmux
+      # Needed for OH-MY-ZSH plugins.
+      autojump
+      tmux
 
-    # Common development runtimes.
-    nodejs
-    python3
-
-    # nix related
-    #
-    # It provides the command `nom` works just like `nix`
-    # with more detailed log output.
-    nix-output-monitor
-  ] ++ lib.optionals stdenv.isLinux [
-    # Linux-only as MacOS has osxkeychain built-in.
-    git-credential-manager
-  ];
+      # nix related
+      #
+      # It provides the command `nom` works just like `nix`
+      # with more detailed log output.
+      nix-output-monitor
+    ]
+    ++ lib.optionals stdenv.isLinux [
+      # Linux-only as MacOS has osxkeychain built-in.
+      git-credential-manager
+    ]
+    ++ lib.optionals stdenv.isDarwin [
+      pinentry-mac
+    ];
 }

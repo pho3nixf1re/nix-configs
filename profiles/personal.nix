@@ -6,6 +6,8 @@
     ../modules/home/dev.nix
     ../modules/home/personal-apps.nix
     ../modules/home/gaming-tools.nix
+    ../modules/home/neovim/neovim.nix
+    ../modules/home/mise/mise.nix
     ../modules/home/ssh/ssh.nix
     ../modules/home/zsh/zsh.nix
     ../modules/home/starship/starship.nix
