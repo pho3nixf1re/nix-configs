@@ -26,7 +26,6 @@
     };
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Optional: Declarative tap management
@@ -76,7 +75,6 @@
                 {
                   imports = [
                     ./profiles/personal.nix
-                    ./profiles/dev.nix
                     ./profiles/desktop-system.nix
                   ];
                 };
