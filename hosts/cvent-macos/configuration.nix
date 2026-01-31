@@ -64,10 +64,6 @@
       cleanup = "none";
     };
 
-    taps = [
-      "1password/tap"
-    ];
-
     brews = [
       "zsh"
     ];
@@ -77,6 +73,7 @@
       "1password/tap/1password-cli"
       "airfoil"
       "iterm2"
+      "bartender"
     ];
   };
 }

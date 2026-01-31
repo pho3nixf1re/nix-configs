@@ -24,6 +24,24 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-homebrew = {
+      url = "github:zhaofengli/nix-homebrew";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Optional: Declarative tap management
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+    homebrew-1password = {
+      url = "github:1password/homebrew-tap";
+      flake = false;
+    };
   };
 
   outputs =
@@ -33,6 +51,10 @@
       plasma-manager,
       sops-nix,
       nix-darwin,
+      nix-homebrew,
+      homebrew-core,
+      homebrew-cask,
+      homebrew-1password,
       ...
     }:
     {
@@ -78,9 +100,29 @@
       darwinConfigurations = {
         cvent-macos = nix-darwin.lib.darwinSystem {
           modules = [
+            nix-homebrew.darwinModules.nix-homebrew
             ./hosts/cvent-macos/configuration.nix
             home-manager.darwinModules.home-manager
             {
+              nix-homebrew = {
+                enable = true;
+
+                # Apple Silicon backwards compatibility: Also install Homebrew
+                # under the default Intel prefix for Rosetta 2.
+                enableRosetta = true;
+
+                user = "mturney";
+
+                # Automatically migrate existing Homebrew installations.
+                autoMigrate = true;
+
+                # Declarative tap management
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                  "1password/homebrew-tap" = homebrew-1password;
+                };
+              };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
@@ -93,6 +135,13 @@
                 ];
               };
             }
+            # Align homebrew taps config with nix-homebrew
+            (
+              { config, ... }:
+              {
+                homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
+              }
+            )
           ];
         };
       };
