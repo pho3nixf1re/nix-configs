@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   programs.vscode.enable = true;
@@ -23,8 +23,8 @@
     # Conflicts with ssh-agent and git signing.
     enableSshSupport = false;
     enableBashIntegration = true;
+    pinentryPackage = lib.mkIf pkgs.stdenv.isLinux pkgs.pinentry-qt;
   };
-  services.gpg-agent.pinentry.package = pkgs.pinentry-qt;
 
   home.packages = with pkgs; [
     nodejs
