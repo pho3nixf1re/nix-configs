@@ -175,7 +175,7 @@ Keep all Home Manager modules portable—no `services.*` or hardware config.
 
 Compose modules into meaningful bundles:
 
-- **`common-user.nix`** — Base user setup (imports `base.nix`, `dev.nix`, `gaming-tools.nix`)
+- **`personal.nix`** — Base user setup (imports `base.nix`, `dev.nix`, `gaming-tools.nix`)
 - **`dev.nix`** — Developer profile (imports `modules/home/dev.nix`)
 - **`desktop-system.nix`** — Desktop-specific profile (imports `steam.nix`, `gaming-tools.nix`)
 

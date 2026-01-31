@@ -38,7 +38,7 @@ Never the reverse. This ensures Home Manager configs remain portable.
 ### Profiles Over Hosts
 
 **Profiles** represent intent:
-- `common-user.nix` - Baseline tools every user needs
+- `personal.nix` - Baseline tools every user needs
 - `dev.nix` - Development-focused additions
 
 **Hosts** represent machines:

@@ -25,7 +25,7 @@ A single Nix flake–based repository supporting:
 │   └── nixos/
 │       └── base.nix       # Core NixOS system config
 ├── profiles/
-│   ├── common-user.nix    # Standard user profile
+│   ├── personal.nix    # Standard user profile
 │   ├── dev.nix            # Developer-focused profile
 │   └── desktop-system.nix # Desktop system profile
 └── docs/

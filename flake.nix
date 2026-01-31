@@ -53,7 +53,7 @@
                 { ... }:
                 {
                   imports = [
-                    ./profiles/common-user.nix
+                    ./profiles/personal.nix
                     ./profiles/dev.nix
                     ./profiles/desktop-system.nix
                   ];
@@ -69,7 +69,7 @@
           modules = [
             sops-nix.homeManagerModules.sops
             ./hosts/steam-deck/home.nix
-            ./profiles/common-user.nix
+            ./profiles/personal.nix
             ./profiles/dev.nix
           ];
         };
