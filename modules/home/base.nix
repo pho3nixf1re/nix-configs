@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  stdenv,
   ...
 }:
 
@@ -74,11 +73,11 @@
       # with more detailed log output.
       nix-output-monitor
     ]
-    ++ lib.optionals stdenv.isLinux [
+    ++ lib.optionals pkgs.stdenv.isLinux [
       # Linux-only as MacOS has osxkeychain built-in.
-      git-credential-manager
+      pkgs.git-credential-manager
     ]
-    ++ lib.optionals stdenv.isDarwin [
-      pinentry-mac
+    ++ lib.optionals pkgs.stdenv.isDarwin [
+      pkgs.pinentry_mac
     ];
 }
