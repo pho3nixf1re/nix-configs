@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   programs.lazydocker.enable = true;
 
@@ -5,8 +7,9 @@
     enable = true;
   };
 
-  services.colima = {
-    enable = true;
-    startOnLogin = false;
-  };
+  home.packages = with pkgs; [
+    colima
+    docker
+    docker-compose
+  ];
 }
