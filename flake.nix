@@ -161,6 +161,14 @@
                 postgresql
               ];
             };
+
+            # iterm2 automation environment for Python development
+            iterm-automation = nixpkgs.legacyPackages.${system}.mkShell {
+              buildInputs = with nixpkgs.legacyPackages.${system}; [
+                python3
+                python3.pkgs.iterm2
+              ];
+            };
           });
     };
 }
