@@ -43,21 +43,8 @@
     enable = true;
     onActivation = {
       autoUpdate = false;
-      # TODO: Don't cleanup unmanaged brews. Change when all brews are managed with nix.
+      # Don't cleanup unmanaged brews.
       cleanup = "none";
     };
-
-    brews = [
-      # Install zsh here as other programs expect it to be in Homebrew.
-      "zsh"
-    ];
-
-    casks = [
-      "1password"
-      "1password/tap/1password-cli"
-      "airfoil"
-      "iterm2"
-      "bartender"
-    ];
   };
 }
