@@ -11,6 +11,7 @@
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    import-tree.url = "github:vic/import-tree";
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -154,21 +155,8 @@
       devShells =
         nixpkgs.lib.genAttrs [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" "aarch64-linux" ]
           (system: {
-            # Used to provide database CLI tools.
-            database-tools = nixpkgs.legacyPackages.${system}.mkShell {
-              buildInputs = with nixpkgs.legacyPackages.${system}; [
-                mysql80
-                postgresql
-              ];
-            };
-
-            # iterm2 automation environment for Python development
-            iterm-automation = nixpkgs.legacyPackages.${system}.mkShell {
-              buildInputs = with nixpkgs.legacyPackages.${system}; [
-                python3
-                python3.pkgs.iterm2
-              ];
-            };
+            database-tools = (import ./shells/database-tools.nix { inherit nixpkgs system; });
+            iterm-automation = (import ./shells/iterm-automation.nix { inherit nixpkgs system; });
           });
     };
 }
