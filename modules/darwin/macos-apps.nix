@@ -9,9 +9,21 @@
       "firefox"
       "1password"
       "1password/tap/1password-cli"
-      "airfoil"
-      "iterm2"
+
+      "alfred"
       "bartender"
+      "steermouse"
+
+      "airfoil"
+      "qobuz"
+
+      "iterm2"
+      "dash"
+      "bruno"
+      "switchhosts"
+
+      "dbeaver-community"
+      "tableplus"
     ];
   };
 }
