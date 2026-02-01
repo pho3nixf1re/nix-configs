@@ -1,11 +1,8 @@
 { pkgs, ... }:
 
 {
+  # For container monitoring on CLI.
   programs.lazydocker.enable = true;
-
-  programs.docker-cli = {
-    enable = true;
-  };
 
   home.packages = with pkgs; [
     colima
