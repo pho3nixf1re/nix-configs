@@ -27,12 +27,6 @@ in
       nix-dev = "nix develop \"$NIX_FLAKE_PATH#\"";
       nix-flake = "nix flake --flake \"$NIX_FLAKE_PATH\"";
       nix-update = "nix flake update --flake \"$NIX_FLAKE_PATH\"";
-    }
-    // lib.optionalAttrs isDarwin {
-      nix-rebuild = "darwin-rebuild switch --flake \"$NIX_FLAKE_PATH#cvent-macos\"";
-    }
-    // lib.optionalAttrs isLinux {
-      nix-rebuild = "sudo nixos-rebuild switch --flake \"$NIX_FLAKE_PATH#pho3nixf1re-nixos\"";
     };
 
     oh-my-zsh = {
