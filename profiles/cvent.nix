@@ -17,7 +17,4 @@
   home.username = "mturney";
   home.homeDirectory = "/Users/mturney";
   home.stateVersion = "26.05";
-
-  # Used for iTerm2 integration and automation.
-  programs.mise.globalConfig.tools.python = "latest";
 }
