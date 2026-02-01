@@ -103,6 +103,7 @@
             nix-homebrew.darwinModules.nix-homebrew
             ./hosts/cvent-macos/configuration.nix
             ./modules/darwin/macos-apps.nix
+            ./modules/darwin/appearance.nix
             ./modules/system/common.nix
             home-manager.darwinModules.home-manager
             {

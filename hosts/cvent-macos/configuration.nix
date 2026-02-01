@@ -16,7 +16,6 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
 
-  # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   # Primary user for system defaults and homebrew
@@ -31,67 +30,8 @@
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  # System defaults
-  system.defaults = {
-    dock = {
-      autohide = true;
-      autohide-delay = 0.5;
-      orientation = "bottom";
-      show-recents = false;
-      tilesize = 48;
-      largesize = 52;
-      magnification = true;
-      show-process-indicators = true;
-    };
-    finder = {
-      AppleShowAllFiles = true;
-      AppleShowAllExtensions = true;
-      ShowPathbar = true;
-      ShowStatusBar = true;
-      FXEnableExtensionChangeWarning = false;
-      # Set Finder view to list by default.
-      FXPreferredViewStyle = "Nlsv";
-      FXRemoveOldTrashItems = true;
-      # Search the current folder by default.
-      FXDefaultSearchScope = "SCcf";
-      NewWindowTarget = "Home";
-      ShowExternalHardDrivesOnDesktop = false;
-      ShowMountedServersOnDesktop = false;
-      ShowRemovableMediaOnDesktop = false;
-      CreateDesktop = false;
-    };
-    menuExtraClock = {
-      FlashDateSeparators = false;
-      IsAnalog = false;
-      Show24Hour = true;
-      ShowAMPM = false;
-      ShowDayOfMonth = false;
-      ShowDayOfWeek = true;
-      ShowDate = 1;
-      ShowSeconds = false;
-    };
-
-    controlcenter = {
-      AirDrop = false;
-      BatteryShowPercentage = true;
-      Bluetooth = false;
-      Display = false;
-      FocusModes = false;
-      NowPlaying = true;
-      Sound = false;
-    };
-
-    NSGlobalDomain = {
-      AppleShowAllFiles = true;
-      AppleShowAllExtensions = true;
-      AppleShowScrollBars = "Automatic";
-      InitialKeyRepeat = 15;
-      KeyRepeat = 2;
-    };
-  };
-
-  # Set ZDOTDIR so zsh looks in XDG config location.
   environment.variables = {
+    # Use XDG config location for zsh. Default is `$HOME/.zshrc` on MacOS.
     ZDOTDIR = "$HOME/.config/zsh";
   };
 
