@@ -38,10 +38,6 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    homebrew-1password = {
-      url = "github:1password/homebrew-tap";
-      flake = false;
-    };
   };
 
   outputs =
@@ -54,7 +50,6 @@
       nix-homebrew,
       homebrew-core,
       homebrew-cask,
-      homebrew-1password,
       ...
     }:
     {
