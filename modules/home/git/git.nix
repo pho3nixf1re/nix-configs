@@ -1,8 +1,18 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 {
   xdg.configFile = {
-    "zsh/conf.d/git.zsh".source = ./git.zsh;
     "git/common.gitconfig".source = ./common.gitconfig;
+  };
+
+  # Add git aliases to zsh if enabled.
+  programs.zsh.shellAliases = lib.mkIf config.programs.zsh.enable {
+    gcfr = "git commit --fixup @ && git rebase -i @~2";
+    ghpr = "gh pr create -f";
   };
 
   home.file = {

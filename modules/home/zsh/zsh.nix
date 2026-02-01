@@ -1,7 +1,12 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 
 let
-  inherit (pkgs.stdenv) isDarwin;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 in
 {
   programs.zsh = {
@@ -9,6 +14,26 @@ in
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+
+    sessionVariables = {
+      NIX_FLAKE_PATH = "$HOME/nix-configs";
+    };
+
+    shellAliases = {
+      less = "less -R";
+      nr = "npm run";
+      ni = "npm install";
+
+      nix-dev = "nix develop \"$NIX_FLAKE_PATH#\"";
+      nix-flake = "nix flake --flake \"$NIX_FLAKE_PATH\"";
+      nix-update = "nix flake update --flake \"$NIX_FLAKE_PATH\"";
+    }
+    // lib.optionalAttrs isDarwin {
+      nix-rebuild = "darwin-rebuild switch --flake \"$NIX_FLAKE_PATH#cvent-macos\"";
+    }
+    // lib.optionalAttrs isLinux {
+      nix-rebuild = "sudo nixos-rebuild switch --flake \"$NIX_FLAKE_PATH#pho3nixf1re-nixos\"";
+    };
 
     oh-my-zsh = {
       enable = true;
@@ -38,24 +63,26 @@ in
       ++ lib.optionals isDarwin [ "macos" ];
     };
 
-    initContent = ''
-      # Load OS detection variables
-      source ${./os-detection.zsh}
+    # Load custom zsh configuration, os-detection first, then conf.d files
+    plugins = [
+      {
+        name = "os-detection";
+        src = ./.;
+        file = "os-detection.zsh";
+      }
+    ]
+    # Load all zsh files in conf.d here.
+    ++ builtins.map (filename: {
+      name = lib.removeSuffix ".zsh" filename;
+      src = ./conf.d;
+      file = filename;
+    }) (builtins.attrNames (builtins.readDir ./conf.d));
 
-      # Load additional configuration from conf.d
-      for zshSource in ~/.config/zsh/conf.d/*.zsh; do
+    # Source local-only customizations from conf.d directory.
+    initContent = /* zsh */ ''
+      for zshSource in ${config.xdg.configHome}/zsh/conf.d/*.zsh(N); do
         source "$zshSource"
       done
     '';
   };
-
-  # Copy all conf.d files to be sourced by zsh.
-  xdg.configFile = builtins.listToAttrs (
-    builtins.map (filename: {
-      name = "zsh/conf.d/${filename}";
-      value = {
-        source = ./conf.d/${filename};
-      };
-    }) (builtins.attrNames (builtins.readDir ./conf.d))
-  );
 }
