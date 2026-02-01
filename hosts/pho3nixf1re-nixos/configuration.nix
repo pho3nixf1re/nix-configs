@@ -161,7 +161,8 @@
     enable = true;
     extraConfig = ''
       
-            Defaults timestamp_timeout=60
+      
+                  Defaults timestamp_timeout=60
     '';
     extraRules = [
       {
@@ -311,18 +312,6 @@
     envfs = {
       enable = true;
     };
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-  };
-
-  # Optimize store automatically
-  nix.optimise = {
-    automatic = true;
-    dates = [ "weekly" ];
   };
 
   # This value determines the NixOS release from which the default

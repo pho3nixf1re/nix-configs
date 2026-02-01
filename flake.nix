@@ -62,6 +62,7 @@
           modules = [
             ./hosts/pho3nixf1re-nixos/configuration.nix
             ./modules/system/common.nix
+            ./modules/system/store-cleanup.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -104,6 +105,7 @@
             ./hosts/cvent-macos/configuration.nix
             ./modules/darwin/macos-apps.nix
             ./modules/darwin/appearance.nix
+            ./modules/darwin/store-cleanup.nix
             ./modules/system/common.nix
             home-manager.darwinModules.home-manager
             {
