@@ -61,6 +61,7 @@
         pho3nixf1re-nixos = nixpkgs.lib.nixosSystem {
           modules = [
             ./hosts/pho3nixf1re-nixos/configuration.nix
+            ./modules/system/common.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -102,6 +103,7 @@
             nix-homebrew.darwinModules.nix-homebrew
             ./hosts/cvent-macos/configuration.nix
             ./modules/darwin/macos-apps.nix
+            ./modules/system/common.nix
             home-manager.darwinModules.home-manager
             {
               nix-homebrew = {

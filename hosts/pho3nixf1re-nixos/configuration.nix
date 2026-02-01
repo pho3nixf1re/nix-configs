@@ -160,7 +160,8 @@
   security.sudo = {
     enable = true;
     extraConfig = ''
-      Defaults timestamp_timeout=60
+      
+            Defaults timestamp_timeout=60
     '';
     extraRules = [
       {
@@ -311,10 +312,6 @@
       enable = true;
     };
   };
-
-  fonts.packages = with pkgs; [
-    nerd-fonts.fira-code
-  ];
 
   nix.gc = {
     automatic = true;
