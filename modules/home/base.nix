@@ -39,13 +39,6 @@
   };
 
   programs.gpg.enable = true;
-  services.gpg-agent = {
-    enable = true;
-    # Conflicts with ssh-agent and git signing.
-    enableSshSupport = false;
-    enableBashIntegration = true;
-    pinentryPackage = lib.mkIf pkgs.stdenv.isLinux pkgs.pinentry-qt;
-  };
 
   # Allows home-manager to manage xdg settings and config files.
   xdg.enable = true;
