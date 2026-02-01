@@ -2,11 +2,11 @@
   system.defaults = {
     dock = {
       autohide = true;
-      autohide-delay = 0.5;
+      autohide-delay = 0.25;
       orientation = "bottom";
       show-recents = false;
       tilesize = 48;
-      largesize = 52;
+      largesize = 60;
       magnification = true;
       show-process-indicators = true;
     };
