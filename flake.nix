@@ -125,7 +125,6 @@
                 taps = {
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
-                  "1password/homebrew-tap" = homebrew-1password;
                 };
               };
               home-manager.useGlobalPkgs = true;
