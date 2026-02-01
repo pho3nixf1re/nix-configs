@@ -10,6 +10,9 @@
   };
 
   home.packages = with pkgs; [
+    # Github CLI.
+    gh
+
     git-extras
   ];
 
@@ -37,6 +40,8 @@
       })
     ];
   };
+
+  programs.git.lfs.enable = true;
 
   # TODO: Link Windows gitconfig from WSL to Windows home path.
   # This should be a /mnt/c/Users/{username} path. Something like:

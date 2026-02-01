@@ -150,5 +150,17 @@
           ];
         };
       };
+
+      devShells =
+        nixpkgs.lib.genAttrs [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" "aarch64-linux" ]
+          (system: {
+            # Used to provide database CLI tools.
+            database-tools = nixpkgs.legacyPackages.${system}.mkShell {
+              buildInputs = with nixpkgs.legacyPackages.${system}; [
+                mysql80
+                postgresql
+              ];
+            };
+          });
     };
 }

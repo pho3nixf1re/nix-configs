@@ -54,12 +54,18 @@
     with pkgs;
     [
       # General CLI tools.
-      gh
       ripgrep
       jq
       nnn
       tree
       eza
+
+      # Process monitoring tools.
+      htop
+      watch
+      pstree
+
+      # Networking tools.
       httpie
       curl
 

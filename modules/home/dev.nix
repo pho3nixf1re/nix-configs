@@ -12,8 +12,11 @@
     nixfmt
     nil
 
+    # Shell development tools.
+    shellcheck
+    shfmt
+
     # General development tools and utilities.
-    git
-    gh
+    serve
   ];
 }
