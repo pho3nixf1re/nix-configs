@@ -150,8 +150,8 @@
       devShells =
         nixpkgs.lib.genAttrs [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" "aarch64-linux" ]
           (system: {
-            database-tools = (import ./shells/database-tools.nix { inherit nixpkgs system; });
-            iterm-automation = (import ./shells/iterm-automation.nix { inherit nixpkgs system; });
+            database-tools = (import ./modules/shells/database-tools.nix { inherit nixpkgs system; });
+            iterm-automation = (import ./modules/shells/iterm-automation.nix { inherit nixpkgs system; });
           });
     };
 }
