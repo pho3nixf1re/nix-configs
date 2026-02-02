@@ -54,6 +54,8 @@
       AppleShowScrollBars = "Automatic";
       InitialKeyRepeat = 15;
       KeyRepeat = 2;
+      # Disables the press-and-hold feature for keys in favor of key repeat.
+      ApplePressAndHoldEnabled = false;
     };
   };
 }
