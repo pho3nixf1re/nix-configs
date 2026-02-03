@@ -1,8 +1,11 @@
 {
   programs.neovim = {
     enable = true;
-    defaultEditor = false;
     viAlias = true;
     vimAlias = true;
+  };
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
   };
 }

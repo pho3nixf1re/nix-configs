@@ -6,8 +6,4 @@
   # SteamOS uses fixed 'deck' username.
   home.username = "deck";
   home.homeDirectory = "/home/deck";
-
-  home.sessionVariables = {
-    EDITOR = "code";
-  };
 }
