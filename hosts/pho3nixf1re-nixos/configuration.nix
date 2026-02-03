@@ -125,10 +125,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  # services.xserver.enable = true;
-
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
@@ -140,10 +136,9 @@
     options = "caps:swapescape,grp:alt_shift_toggle";
   };
 
-  # Configure console keymap
+  # Configure console keymap, separate from desktop environment.
   console.keyMap = "dvorak";
 
-  # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Fixes error "Failed to start Refresh fwupd metadata and update motd." when rebuilding.
@@ -156,13 +151,10 @@
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
-  # Configure sudo timeout
   security.sudo = {
     enable = true;
     extraConfig = ''
-      
-      
-                  Defaults timestamp_timeout=60
+      Defaults timestamp_timeout=60
     '';
     extraRules = [
       {
@@ -194,10 +186,6 @@
     #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.pho3nixf1re = {
     isNormalUser = true;
     description = "Matthew Turney";
@@ -222,9 +210,8 @@
     };
   };
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  # List packages installed in system profile. To search, run:
+
   environment.systemPackages = with pkgs; [
     # Flakes clones its dependencies through the git command, so git must be installed first.
     git
