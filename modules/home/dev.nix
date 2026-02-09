@@ -7,6 +7,7 @@
     # Development runtimes.
     nodejs
     python3
+    python3.pkgs.pip
 
     # Nix development tools.
     nixfmt
