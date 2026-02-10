@@ -3,23 +3,25 @@
   programs.plasma = {
     enable = true;
 
+    # Times and timeouts are in seconds, unless otherwise noted.
+
     powerdevil = {
       AC = {
         powerButtonAction = "shutDown";
         autoSuspend = {
-          action = "sleep";
-          idleTimeout = 7200; # in seconds
+          action = "nothing";
+          # idleTimeout = 7200;
         };
         turnOffDisplay = {
-          idleTimeout = 3600; # in seconds
-          idleTimeoutWhenLocked = 300; # in seconds
+          idleTimeout = 3600;
+          idleTimeoutWhenLocked = 300;
         };
         dimDisplay = {
           enable = true;
-          idleTimeout = 1800; # in seconds
+          idleTimeout = 1800;
         };
         powerProfile = "performance";
-        whenSleepingEnter = "standbyThenHibernate";
+        whenSleepingEnter = "standby";
       };
     };
 
@@ -55,7 +57,7 @@
       effects = {
         hideCursor = {
           enable = true;
-          hideOnInactivity = 15; # in seconds
+          hideOnInactivity = 15;
           hideOnTyping = true;
         };
       };
