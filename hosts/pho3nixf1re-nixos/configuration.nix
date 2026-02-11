@@ -193,9 +193,10 @@
       "networkmanager"
       "wheel"
     ];
-    packages = with pkgs; [
-      kdePackages.kate
-      kdePackages.yakuake
+    packages = with pkgs.kdePackages; [
+      kate
+      kfind
+      yakuake
       #  thunderbird
     ];
     shell = pkgs.zsh;
