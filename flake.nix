@@ -59,6 +59,7 @@
             ./hosts/pho3nixf1re-nixos/configuration.nix
             ./modules/system/common.nix
             ./modules/system/store-cleanup.nix
+            ./modules/system/vr.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
