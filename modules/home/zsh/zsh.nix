@@ -6,7 +6,7 @@
 }:
 
 let
-  inherit (pkgs.stdenv) isDarwin isLinux;
+  inherit (pkgs.stdenv) isDarwin;
 in
 {
   programs.zsh = {
