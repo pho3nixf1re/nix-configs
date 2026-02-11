@@ -17,5 +17,6 @@
 
   imports = [
     ../modules/home/gaming-tools.nix
+    ../modules/home/book-management.nix
   ];
 }
