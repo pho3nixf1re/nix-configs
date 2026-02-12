@@ -29,7 +29,7 @@
   services.smb-mounts = {
     enable = true;
     mounts.feliciterra = {
-      share = "//feliciterra-nas/feliciterra-storage";
+      share = "//10.0.0.105/feliciterra-storage";
       mountPoint = "mnt/feliciterra";
     };
   };

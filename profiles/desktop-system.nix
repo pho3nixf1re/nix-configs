@@ -6,6 +6,7 @@
 
   home.packages = with pkgs; [
     kdePackages.discover
+    wl-clipboard
   ];
 
   systemd.user.sessionVariables = {

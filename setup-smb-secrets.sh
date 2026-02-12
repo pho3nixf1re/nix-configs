@@ -21,7 +21,7 @@ echo
 # Check for required tools
 if ! command -v op &> /dev/null; then
     echo "❌ 1Password CLI not found."
-    echo "   Install with: nix-shell -p _1password"
+    echo "   Install with: nix shell nixpkgs#_1password-cli"
     exit 1
 fi
 
@@ -87,14 +87,14 @@ if grep -q "BEGIN PRIVATE KEY" "$SSH_KEY_PATH"; then
     echo "   ✓ Key converted to OpenSSH format"
 fi
 
-# Auto-detect if we need nix-shell
+# Auto-detect if we need nix shell
 # Temporarily allow errors to surface key format issues.
 set +e
 if command -v ssh-to-age &> /dev/null; then
     AGE_KEY_OUTPUT=$(ssh-to-age -private-key -i "$SSH_KEY_PATH" 2>&1)
     EXIT_CODE=$?
 else
-    AGE_KEY_OUTPUT=$(nix-shell -p ssh-to-age --run "ssh-to-age -private-key -i '$SSH_KEY_PATH'" 2>&1)
+    AGE_KEY_OUTPUT=$(nix shell nixpkgs#ssh-to-age --quiet --command ssh-to-age -private-key -i "$SSH_KEY_PATH" 2>/dev/null)
     EXIT_CODE=$?
 fi
 # Re-enable exit on error for cleaner script behavior.
@@ -123,7 +123,7 @@ echo "✅ Age key generated and saved"
 if command -v age-keygen &> /dev/null; then
     AGE_PUBLIC_KEY=$(age-keygen -y ~/.config/sops/age/keys.txt)
 else
-    AGE_PUBLIC_KEY=$(nix-shell -p age --run "age-keygen -y ~/.config/sops/age/keys.txt")
+    AGE_PUBLIC_KEY=$(nix shell nixpkgs#age --quiet --command age-keygen -y ~/.config/sops/age/keys.txt)
 fi
 echo "   Public key: $AGE_PUBLIC_KEY"
 
@@ -171,17 +171,16 @@ mkdir -p secrets
 cat > "secrets/smb.yaml" << EOF
 smb:
   feliciterra:
-    credentials: |
-      username=$USERNAME
-      password=$PASSWORD
-      domain=WORKGROUP
+    env: |
+      SMB_USERNAME=$USERNAME
+      SMB_PASSWORD=$PASSWORD
 EOF
 
 # Encrypt the secrets in place
 if command -v sops &> /dev/null; then
     sops -e -i secrets/smb.yaml
 else
-    nix-shell -p sops --run "sops -e -i secrets/smb.yaml"
+    nix shell nixpkgs#sops --quiet --command sops -e -i secrets/smb.yaml
 fi
 
 echo "✅ Secrets encrypted and saved to secrets/smb.yaml"

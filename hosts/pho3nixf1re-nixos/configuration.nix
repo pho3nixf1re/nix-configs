@@ -160,12 +160,13 @@
       {
         users = [ "pho3nixf1re" ];
         commands = [
+          # Allows SMB mounts, see `modules/home/feliciterra-fileshares.nix`
           {
-            command = "${pkgs.cifs-utils}/bin/mount.cifs";
+            command = "/run/wrappers/bin/mount -t cifs //10.0.0.105/feliciterra-storage /home/pho3nixf1re/mnt/feliciterra *";
             options = [ "NOPASSWD" ];
           }
           {
-            command = "${pkgs.util-linux}/bin/umount";
+            command = "/run/wrappers/bin/umount /home/pho3nixf1re/mnt/feliciterra";
             options = [ "NOPASSWD" ];
           }
         ];
