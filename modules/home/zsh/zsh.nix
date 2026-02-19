@@ -23,10 +23,6 @@ in
       less = "less -R";
       nr = "npm run";
       ni = "npm install";
-
-      nix-dev = "nix develop \"$NIX_FLAKE_PATH#\"";
-      nix-flake = "nix flake --flake \"$NIX_FLAKE_PATH\"";
-      nix-update = "nix flake update --flake \"$NIX_FLAKE_PATH\"";
     };
 
     oh-my-zsh = {
