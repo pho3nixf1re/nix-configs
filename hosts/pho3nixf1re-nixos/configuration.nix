@@ -125,8 +125,11 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
+  # Enable the KDE Plasma Desktop Environment with wayland.
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap for login screen.
