@@ -1,4 +1,6 @@
-nix-update = nix flake update --flake "$NIX_FLAKE_PATH"
+nix-update() {
+  nix flake update --flake "$NIX_FLAKE_PATH"
+}
 
 # nix-dev function to support arguments like: nix-dev database-tools --command zsh
 nix-dev() {

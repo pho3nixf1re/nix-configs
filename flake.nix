@@ -52,6 +52,12 @@
       homebrew-cask,
       ...
     }:
+    let
+      deckPkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
+    in
     {
       nixosConfigurations = {
         pho3nixf1re-nixos = nixpkgs.lib.nixosSystem {
@@ -73,26 +79,27 @@
                 { ... }:
                 {
                   imports = [
+                    ./hosts/steam-deck/home.nix
                     ./profiles/personal.nix
                     ./profiles/desktop-system.nix
                     ./profiles/common.nix
                   ];
                 };
-
-              # Optionally, use home-manager.extraSpecialArgs to pass
-              # arguments to home.nix
             }
           ];
         };
+      };
 
-        homeConfigurations."deck@steamdeck" = home-manager.lib.homeManagerConfiguration {
-          modules = [
-            sops-nix.homeManagerModules.sops
-            ./hosts/steam-deck/home.nix
-            ./profiles/personal.nix
-            ./profiles/common.nix
-          ];
-        };
+      homeConfigurations."deck" = home-manager.lib.homeManagerConfiguration {
+        pkgs = deckPkgs;
+
+        modules = [
+          plasma-manager.homeModules.plasma-manager
+          sops-nix.homeManagerModules.sops
+          ./hosts/steam-deck/home.nix
+          ./profiles/personal.nix
+          ./profiles/common.nix
+        ];
       };
 
       darwinConfigurations = {

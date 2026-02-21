@@ -1,4 +1,10 @@
+{ pkgs, ... }:
+
 {
+  home.packages = with pkgs; [
+    kdePackages.yakuake
+  ];
+
   # See https://nix-community.github.io/plasma-manager/options.xhtml
   programs.plasma = {
     enable = true;

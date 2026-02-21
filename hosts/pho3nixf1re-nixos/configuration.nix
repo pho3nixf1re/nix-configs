@@ -200,7 +200,6 @@
     packages = with pkgs.kdePackages; [
       kate
       kfind
-      yakuake
       #  thunderbird
     ];
     shell = pkgs.zsh;
