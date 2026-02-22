@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../modules/home/display.nix
     ../modules/home/base.nix
     ../modules/home/dev.nix
     ../modules/home/personal-apps.nix
