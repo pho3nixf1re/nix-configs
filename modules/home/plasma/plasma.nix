@@ -1,10 +1,36 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
     kdePackages.konsole
     kdePackages.yakuake
   ];
+
+  # Override the package's .desktop file to use Exec directly with the full
+  # store path, disabling DBusActivatable. On non-NixOS (e.g. SteamOS), the
+  # Nix D-Bus service files are not registered with the session daemon so
+  # DBusActivatable fails with ServiceUnknown.
+  # Written directly because xdg.desktopEntries doesn't reliably work on
+  # non-NixOS systems.
+  xdg.dataFile."applications/org.kde.yakuake.desktop" = lib.mkIf config.targets.genericLinux.enable {
+    text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Yakuake
+      GenericName=Drop-down Terminal
+      Comment=A drop-down terminal emulator based on KDE Konsole technology.
+      Exec=${pkgs.kdePackages.yakuake}/bin/yakuake
+      Icon=yakuake
+      Categories=Qt;KDE;System;TerminalEmulator;
+      Terminal=false
+      StartupNotify=false
+    '';
+  };
 
   # See https://nix-community.github.io/plasma-manager/options.xhtml
   programs.plasma = {
