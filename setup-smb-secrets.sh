@@ -69,22 +69,31 @@ echo
 echo "🔑 Step 2: Generating age key from 1Password SSH key..."
 mkdir -p ~/.config/sops/age
 
-# Check if key needs format conversion (PKCS#8 to OpenSSH)
+# Check if key needs format conversion (PKCS#8 to OpenSSH).
+# 1Password exports ed25519 keys in PKCS#8 format (BEGIN PRIVATE KEY), but
+# ssh-to-age requires OpenSSH format (BEGIN OPENSSH PRIVATE KEY).
+# ssh-keygen -p without -m rewrites the key in native OpenSSH format.
+# nixpkgs openssh is used for a consistent modern version across macOS and Linux.
 if grep -q "BEGIN PRIVATE KEY" "$SSH_KEY_PATH"; then
     echo "   Converting key from PKCS#8 to OpenSSH format..."
 
-    # Create a new temporary file for the converted key
-    OPENSSH_KEY=$(mktemp)
-    trap "rm -f $SSH_KEY_PATH $OPENSSH_KEY" EXIT
+    CONVERTED_KEY=$(mktemp)
+    chmod 600 "$CONVERTED_KEY"
+    cp "$SSH_KEY_PATH" "$CONVERTED_KEY"
+    trap "rm -f $SSH_KEY_PATH $CONVERTED_KEY" EXIT
 
-    # Use ssh-keygen to convert format - without -m it defaults to OpenSSH format
-    # -P "" = old passphrase empty, -N "" = new passphrase empty, -q = quiet
-    ssh-keygen -p -P "" -N "" -f "$SSH_KEY_PATH" -q || {
-        echo "❌ Failed to convert key format"
+    # ssh-keygen -p reads PKCS#8 and rewrites in native OpenSSH format (no -m flag).
+    # Use nixpkgs openssh for a consistent modern version across macOS and Linux.
+    CONV_OUT=$(nix shell nixpkgs#openssh --quiet --command \
+        ssh-keygen -p -P "" -N "" -f "$CONVERTED_KEY" 2>&1) && CONV_RC=0 || CONV_RC=$?
+    if [ $CONV_RC -ne 0 ]; then
+        echo "❌ Failed to convert key from PKCS#8 to OpenSSH format"
+        echo "   Output: $CONV_OUT"
         exit 1
-    }
+    fi
 
     echo "   ✓ Key converted to OpenSSH format"
+    SSH_KEY_PATH="$CONVERTED_KEY"
 fi
 
 # Auto-detect if we need nix shell
