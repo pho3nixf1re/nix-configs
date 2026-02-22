@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Setup script for sops-nix with SMB credentials from 1Password. Run this script
-# on each new machine setup, or to refresh secrets when they change
+# to create or refresh encrypted SMB secrets when they change.
+#
+# Automatically runs setup-age-key.sh if the age key doesn't exist yet.
 
 set -euo pipefail
 
@@ -8,15 +10,31 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # Configuration - can be overridden with environment variables
-SSH_KEY_ITEM="${SSH_KEY_ITEM:-op://Private/Nix Secrets Key/private key}"
 SMB_CREDENTIALS_ITEM="${SMB_CREDENTIALS_ITEM:-op://Private/Feliciterra NAS - mturney}"
+AGE_KEY_FILE="${AGE_KEY_FILE:-$HOME/.config/sops/age/keys.txt}"
 
-echo "🔐 SMB Secrets Setup (using 1Password SSH Agent)"
-echo "================================================"
+echo "🔐 SMB Secrets Setup (using 1Password)"
+echo "======================================="
 echo
 echo "This fetches secrets from 1Password and encrypts them with sops."
 echo "Encrypted secrets are SAFE to commit to git."
 echo
+
+# Ensure age key exists (delegates to setup-age-key.sh)
+if [ ! -f "$AGE_KEY_FILE" ]; then
+    echo "🔑 Age key not found at $AGE_KEY_FILE"
+    echo "   Running setup-age-key.sh..."
+    echo
+    "$SCRIPT_DIR/setup-age-key.sh"
+    echo
+fi
+
+# Verify age key is present after attempting setup
+if [ ! -f "$AGE_KEY_FILE" ]; then
+    echo "❌ Age key still not found at $AGE_KEY_FILE"
+    echo "   Run ./setup-age-key.sh manually to debug."
+    exit 1
+fi
 
 # Check for required tools
 if ! command -v op &> /dev/null; then
@@ -42,103 +60,17 @@ if [ -f secrets/smb.yaml ]; then
     fi
 fi
 
-echo
-echo "📋 Step 1: Getting SSH key from 1Password..."
-
-# Create temporary file for SSH key
-SSH_KEY_PATH=$(mktemp)
-trap "rm -f $SSH_KEY_PATH" EXIT
-
-# Fetch SSH private key from 1Password
-if ! op read "$SSH_KEY_ITEM" > "$SSH_KEY_PATH" 2>/dev/null; then
-    echo "❌ Failed to fetch SSH key from 1Password"
-    echo "   Expected item: $SSH_KEY_ITEM"
-    echo ""
-    echo "💡 Available SSH keys in 1Password:"
-    op item list --categories "SSH Key" --format json 2>/dev/null | jq -r '.[] | "   - \(.title)"' || echo "   (install jq to see list)"
-    echo ""
-    echo "Update \$SSH_KEY_ITEM with the correct path."
-    exit 1
-fi
-
-chmod 600 "$SSH_KEY_PATH"
-echo "✅ SSH key retrieved from 1Password"
-
-# Step 2: Generate age key from SSH key
-echo
-echo "🔑 Step 2: Generating age key from 1Password SSH key..."
-mkdir -p ~/.config/sops/age
-
-# Check if key needs format conversion (PKCS#8 to OpenSSH).
-# 1Password exports ed25519 keys in PKCS#8 format (BEGIN PRIVATE KEY), but
-# ssh-to-age requires OpenSSH format (BEGIN OPENSSH PRIVATE KEY).
-# ssh-keygen -p without -m rewrites the key in native OpenSSH format.
-# nixpkgs openssh is used for a consistent modern version across macOS and Linux.
-if grep -q "BEGIN PRIVATE KEY" "$SSH_KEY_PATH"; then
-    echo "   Converting key from PKCS#8 to OpenSSH format..."
-
-    CONVERTED_KEY=$(mktemp)
-    chmod 600 "$CONVERTED_KEY"
-    cp "$SSH_KEY_PATH" "$CONVERTED_KEY"
-    trap "rm -f $SSH_KEY_PATH $CONVERTED_KEY" EXIT
-
-    # ssh-keygen -p reads PKCS#8 and rewrites in native OpenSSH format (no -m flag).
-    # Use nixpkgs openssh for a consistent modern version across macOS and Linux.
-    CONV_OUT=$(nix shell nixpkgs#openssh --quiet --command \
-        ssh-keygen -p -P "" -N "" -f "$CONVERTED_KEY" 2>&1) && CONV_RC=0 || CONV_RC=$?
-    if [ $CONV_RC -ne 0 ]; then
-        echo "❌ Failed to convert key from PKCS#8 to OpenSSH format"
-        echo "   Output: $CONV_OUT"
-        exit 1
-    fi
-
-    echo "   ✓ Key converted to OpenSSH format"
-    SSH_KEY_PATH="$CONVERTED_KEY"
-fi
-
-# Auto-detect if we need nix shell
-# Temporarily allow errors to surface key format issues.
-set +e
-if command -v ssh-to-age &> /dev/null; then
-    AGE_KEY_OUTPUT=$(ssh-to-age -private-key -i "$SSH_KEY_PATH" 2>&1)
-    EXIT_CODE=$?
-else
-    AGE_KEY_OUTPUT=$(nix shell nixpkgs#ssh-to-age --quiet --command ssh-to-age -private-key -i "$SSH_KEY_PATH" 2>/dev/null)
-    EXIT_CODE=$?
-fi
-# Re-enable exit on error for cleaner script behavior.
-set -e
-
-# Check if conversion was successful
-if [ $EXIT_CODE -ne 0 ]; then
-    echo "❌ Failed to convert SSH key to age key (exit code: $EXIT_CODE)"
-    echo "   Output: $AGE_KEY_OUTPUT"
-    echo ""
-    echo "💡 Make sure the SSH key is in the correct format (ed25519 or RSA)"
-    exit 1
-fi
-
-if [ -z "$AGE_KEY_OUTPUT" ]; then
-    echo "❌ ssh-to-age produced no output"
-    echo "   The SSH key may be in an unsupported format"
-    exit 1
-fi
-
-echo "$AGE_KEY_OUTPUT" > ~/.config/sops/age/keys.txt
-chmod 600 ~/.config/sops/age/keys.txt
-echo "✅ Age key generated and saved"
-
-# Get age public key
+# Get age public key from existing key file
 if command -v age-keygen &> /dev/null; then
-    AGE_PUBLIC_KEY=$(age-keygen -y ~/.config/sops/age/keys.txt)
+    AGE_PUBLIC_KEY=$(age-keygen -y "$AGE_KEY_FILE")
 else
-    AGE_PUBLIC_KEY=$(nix shell nixpkgs#age --quiet --command age-keygen -y ~/.config/sops/age/keys.txt)
+    AGE_PUBLIC_KEY=$(nix shell nixpkgs#age --quiet --command age-keygen -y "$AGE_KEY_FILE")
 fi
-echo "   Public key: $AGE_PUBLIC_KEY"
+echo "   Age public key: $AGE_PUBLIC_KEY"
 
-# Step 3: Update .sops.yaml
+# Step 1: Update .sops.yaml
 echo
-echo "📝 Step 3: Updating .sops.yaml..."
+echo "📝 Step 1: Updating .sops.yaml..."
 
 cat > .sops.yaml << EOF
 keys:
@@ -152,9 +84,9 @@ EOF
 
 echo "✅ .sops.yaml updated"
 
-# Step 4: Fetch SMB credentials from 1Password
+# Step 2: Fetch SMB credentials from 1Password
 echo
-echo "🔐 Step 4: Fetching SMB credentials from 1Password..."
+echo "🔐 Step 2: Fetching SMB credentials from 1Password..."
 
 USERNAME=$(op read "$SMB_CREDENTIALS_ITEM/username")
 if [ -z "$USERNAME" ]; then
@@ -172,9 +104,9 @@ fi
 
 echo "✅ Credentials retrieved"
 
-# Step 5: Create and encrypt the secrets file
+# Step 3: Create and encrypt the secrets file
 echo
-echo "🔒 Step 5: Creating encrypted secrets file..."
+echo "🔒 Step 3: Creating encrypted secrets file..."
 mkdir -p secrets
 
 cat > "secrets/smb.yaml" << EOF
@@ -197,16 +129,15 @@ echo "✅ Secrets encrypted and saved to secrets/smb.yaml"
 echo
 echo "✨ Setup complete!"
 echo
-echo "✓ SSH key fetched from 1Password (never stored on disk)"
-echo "✓ Age key derived and saved to ~/.config/sops/age/keys.txt"
+echo "✓ Age key at $AGE_KEY_FILE"
 echo "✓ Secrets encrypted in secrets/smb.yaml (SAFE TO COMMIT)"
 echo
 echo "Next steps:"
-echo "  1. Commit: git add secrets/smb.yaml .sops.yaml && git commit -m 'Add encrypted secrets'"
+echo "  1. Commit: git add secrets/smb.yaml .sops.yaml && git commit -m 'Update encrypted secrets'"
 echo "  2. Rebuild: sudo nixos-rebuild switch --flake .#pho3nixf1re-nixos"
 echo "  3. Check mount: systemctl --user status smb-mount-feliciterra"
 echo "  4. Verify: ls ~/mnt/feliciterra"
 echo
 echo "💡 To update secrets: edit with 'sops secrets/smb.yaml' or run this script again"
-echo "📝 On new machines: Clone repo → run this script → rebuild"
+echo "📝 On new machines: Clone repo → ./setup-age-key.sh → rebuild"
 echo "🔐 Encrypted secrets are safe to commit to git!"

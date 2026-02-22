@@ -50,20 +50,23 @@ darwin-rebuild switch --flake .#cvent-macos
 
 ## Secrets
 
-On a fresh installation, set up secrets from 1Password:
+On a fresh installation, set up the age decryption key from 1Password:
 
 ```bash
-# Run the secrets setup script (one-time setup)
+# Generate age key (one-time setup per machine)
+./setup-age-key.sh
+```
+
+To create or update encrypted SMB credentials:
+
+```bash
+# Fetches credentials from 1Password and encrypts them with sops
 ./setup-smb-secrets.sh
 ```
 
-This script:
-- Generates encryption keys from your SSH key
-- Pulls SMB credentials from 1Password
-- Creates an encrypted secrets file (stored in `secrets/`)
-
-Once created, the Nix configuration reads secrets from the encrypted file. You
-only need to re-run this script if the secrets change in 1Password.
+The age key enables sops-nix to decrypt secrets at build time. You only need to
+run `setup-smb-secrets.sh` if the encrypted secrets need to be created or
+refreshed after changing in 1Password.
 
 For more details, see [SECRETS.md](docs/SECRETS.md).
 
