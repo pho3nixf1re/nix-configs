@@ -10,6 +10,7 @@
   custom.display.server = "x11";
 
   # Allows apps to appear in menu.
+  # Note: triggers a GPU driver warning on SteamOS, but it is harmless.
   targets.genericLinux.enable = true;
 
   home.packages = with pkgs; [
