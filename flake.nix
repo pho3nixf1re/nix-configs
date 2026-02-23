@@ -79,7 +79,7 @@
                 { ... }:
                 {
                   imports = [
-                    ./hosts/steam-deck/home.nix
+                    ./hosts/pho3nixf1re-nixos/home.nix
                     ./profiles/personal.nix
                     ./profiles/desktop-system.nix
                     ./profiles/common.nix
