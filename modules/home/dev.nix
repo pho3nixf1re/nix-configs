@@ -19,5 +19,8 @@
 
     # General development tools and utilities.
     serve
+
+    # The times be a changin', and so must I.
+    github-copilot-cli
   ];
 }
