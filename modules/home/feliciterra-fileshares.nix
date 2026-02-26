@@ -66,7 +66,7 @@ in
 
         mountCmd =
           "sudo -n mount -t cifs \"${mount.share}\" \"${mountPoint}\" "
-          + "-o username=$SMB_USERNAME,password=$SMB_PASSWORD${
+          + "-o username=$SMB_USERNAME,password=$SMB_PASSWORD,uid=$(id -u),gid=$(id -g)${
             optionalString (extraOpts != "") ",${extraOpts}"
           }";
 
