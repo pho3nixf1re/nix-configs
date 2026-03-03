@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgsKernel, ... }:
 
 {
   imports = [
@@ -10,8 +10,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgsKernel.linuxPackages_6_19;
 
   # Prevents warning when running `nixos-rebuild switch`. See:
   # - https://github.com/NixOS/nix/issues/11728
@@ -157,7 +156,17 @@
   security.sudo = {
     enable = true;
     extraConfig = ''
-      Defaults timestamp_timeout=60
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+                                                                  Defaults timestamp_timeout=60
     '';
     extraRules = [
       {

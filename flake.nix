@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-kernel.url = "github:NixOS/nixpkgs/9c47edbb534328c38a08864dbcb76160a1fa352b";
     home-manager = {
       url = "github:nix-community/home-manager";
       # The `follows` keyword in inputs is used for inheritance.
@@ -43,6 +44,7 @@
   outputs =
     {
       nixpkgs,
+      nixpkgs-kernel,
       home-manager,
       plasma-manager,
       sops-nix,
@@ -57,10 +59,18 @@
         system = "x86_64-linux";
         config.allowUnfree = true;
       };
+      kernelPkgs = import nixpkgs-kernel {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
     in
     {
       nixosConfigurations = {
         pho3nixf1re-nixos = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            pkgsKernel = kernelPkgs;
+          };
+
           modules = [
             ./hosts/pho3nixf1re-nixos/configuration.nix
             ./modules/system/common.nix
