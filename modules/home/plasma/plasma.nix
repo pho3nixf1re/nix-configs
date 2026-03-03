@@ -11,6 +11,11 @@
     kdePackages.yakuake
   ];
 
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
+  };
+
   # Override the package's .desktop file to use Exec directly with the full
   # store path, disabling DBusActivatable. On non-NixOS (e.g. SteamOS), the
   # Nix D-Bus service files are not registered with the session daemon so
