@@ -29,6 +29,9 @@
       url = "github:zhaofengli/nix-homebrew";
     };
 
+    # Fork of nixpkgs with a fixed localstack package (localstack-ext dependency)
+    nixpkgs-localstack.url = "github:pho3nixf1re/nixpkgs/d557a7e8c03da5bfc2b6cd5786d5bcdcf88624b3";
+
     # Optional: Declarative tap management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -43,6 +46,7 @@
   outputs =
     {
       nixpkgs,
+      nixpkgs-localstack,
       home-manager,
       plasma-manager,
       sops-nix,
@@ -57,11 +61,46 @@
         system = "x86_64-linux";
         config.allowUnfree = true;
       };
+      localstackFixOverlay = final: prev: {
+        # plux's test suite asserts dist.metadata["License"] == "MIT" using pytest
+        # as a test fixture. This broke in pytest >= 8.1, which adopted PEP 639's
+        # SPDX license format — moving license info to a "License-Expression" core
+        # metadata field and leaving the legacy "License" field returning None.
+        # This is a bug in plux's test, not in plux itself.
+        #
+        # PEP 639 (license metadata overhaul): https://peps.python.org/pep-0639/
+        # pytest changelog: https://github.com/pytest-dev/pytest/blob/main/CHANGELOG.rst
+        python3 = prev.python3.override {
+          packageOverrides = self: super: {
+            plux = super.plux.overrideAttrs (old: {
+              pytestFlagsArray = (old.pytestFlagsArray or [ ]) ++ [
+                "--deselect=tests/test_metadata.py::test_resolve_distribution_information"
+              ];
+            });
+          };
+        };
+      };
+      makeLocalstackPkgs =
+        system:
+        import nixpkgs-localstack {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = [ localstackFixOverlay ];
+        };
     in
     {
       nixosConfigurations = {
         pho3nixf1re-nixos = nixpkgs.lib.nixosSystem {
           modules = [
+            { nixpkgs.overlays = [ localstackFixOverlay ]; }
+            (
+              { pkgs, ... }:
+              {
+                home-manager.extraSpecialArgs = {
+                  localstackPkgs = makeLocalstackPkgs pkgs.system;
+                };
+              }
+            )
             ./hosts/pho3nixf1re-nixos/configuration.nix
             ./modules/system/common.nix
             ./modules/system/store-cleanup.nix
@@ -92,7 +131,9 @@
 
       homeConfigurations."deck" = home-manager.lib.homeManagerConfiguration {
         pkgs = deckPkgs;
-
+        extraSpecialArgs = {
+          localstackPkgs = makeLocalstackPkgs deckPkgs.system;
+        };
         modules = [
           plasma-manager.homeModules.plasma-manager
           sops-nix.homeManagerModules.sops
@@ -105,6 +146,17 @@
       darwinConfigurations = {
         cvent-macos = nix-darwin.lib.darwinSystem {
           modules = [
+            {
+              nixpkgs.overlays = [ localstackFixOverlay ];
+            }
+            (
+              { pkgs, ... }:
+              {
+                home-manager.extraSpecialArgs = {
+                  localstackPkgs = makeLocalstackPkgs pkgs.system;
+                };
+              }
+            )
             nix-homebrew.darwinModules.nix-homebrew
             ./hosts/cvent-macos/configuration.nix
             ./modules/darwin/macos-apps.nix

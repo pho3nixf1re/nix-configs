@@ -138,6 +138,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-localstack": {
+      "locked": {
+        "lastModified": 1772907817,
+        "narHash": "sha256-fXL18B2wUc91EYZ6Hj4yStPA3rU60ILcJxfJJXTsLlI=",
+        "owner": "pho3nixf1re",
+        "repo": "nixpkgs",
+        "rev": "d557a7e8c03da5bfc2b6cd5786d5bcdcf88624b3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pho3nixf1re",
+        "repo": "nixpkgs",
+        "rev": "d557a7e8c03da5bfc2b6cd5786d5bcdcf88624b3",
+        "type": "github"
+      }
+    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -170,6 +186,7 @@
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-localstack": "nixpkgs-localstack",
         "plasma-manager": "plasma-manager",
         "sops-nix": "sops-nix"
       }
