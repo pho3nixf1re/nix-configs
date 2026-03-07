@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-plasma.url = "github:NixOS/nixpkgs/<PLACEHOLDER_PRE_FEB_COMMIT_SHA>";
     home-manager = {
       url = "github:nix-community/home-manager";
       # The `follows` keyword in inputs is used for inheritance.
@@ -44,7 +43,6 @@
   outputs =
     {
       nixpkgs,
-      nixpkgs-plasma,
       home-manager,
       plasma-manager,
       sops-nix,
