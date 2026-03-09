@@ -106,6 +106,24 @@
     };
   };
 
+  # Open ports
+  networking.firewall.allowedTCPPorts = [
+    # krdp for remote desktop connections.
+    3389
+    # Synergy kvm sharing over the network.
+    24802
+    # kde connect (phone app) port.
+    1716
+  ];
+
+
+  # mDNS daemon.
+  services.avahi = {
+    enable = true;
+    # Enables .local TLD resolution.
+    nssmdns4 = true;
+  };
+
   # Set your time zone.
   time.timeZone = "America/Chicago";
 
