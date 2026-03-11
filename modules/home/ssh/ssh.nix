@@ -1,4 +1,4 @@
-_: {
+{
   programs.ssh = {
     enable = true;
     # Deprecated attribute, using * match block instead.
@@ -42,14 +42,10 @@ _: {
   };
 
   # Copy all public keys from the public-keys directory to `~/.ssh`.
-  home.file = builtins.listToAttrs (
-    builtins.map (filename: {
-      name = ".ssh/${filename}";
-      value = {
-        source = ./public-keys/${filename};
-      };
-    }) (builtins.attrNames (builtins.readDir ./public-keys))
-  );
+  home.file.".ssh" = {
+    source = ./public-keys;
+    recursive = true;
+  };
 
   # ssh-agent is handled by 1password.
   # services.ssh-agent.enable = true;

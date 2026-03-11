@@ -118,12 +118,8 @@
     };
   };
 
-  xdg.configFile = builtins.listToAttrs (
-    builtins.map (filename: {
-      name = "autostart/${filename}";
-      value = {
-        source = ./autostart/${filename};
-      };
-    }) (builtins.attrNames (builtins.readDir ./autostart))
-  );
+  xdg.configFile."autostart" = {
+    source = ./autostart;
+    recursive = true;
+  };
 }

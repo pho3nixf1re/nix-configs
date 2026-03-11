@@ -53,26 +53,26 @@ in
       ++ lib.optionals isDarwin [ "macos" ];
     };
 
-    # Load custom zsh configuration, os-detection first, then conf.d files
+    # Load os-detection first so conf.d files can use its helpers.
     plugins = [
       {
         name = "os-detection";
         src = ./.;
         file = "os-detection.zsh";
       }
-    ]
-    # Load all zsh files in conf.d here.
-    ++ builtins.map (filename: {
-      name = lib.removeSuffix ".zsh" filename;
-      src = ./conf.d;
-      file = filename;
-    }) (builtins.attrNames (builtins.readDir ./conf.d));
+    ];
 
-    # Source local-only customizations from conf.d directory.
+    # Source all conf.d files; new files are picked up automatically.
     initContent = /* zsh */ ''
       for zshSource in ${config.xdg.configHome}/zsh/conf.d/*.zsh(N); do
         source "$zshSource"
       done
     '';
+  };
+
+  # Link the entire conf.d directory; any .zsh file added there is sourced automatically.
+  xdg.configFile."zsh/conf.d" = {
+    source = ./conf.d;
+    recursive = true;
   };
 }
