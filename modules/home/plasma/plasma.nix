@@ -5,6 +5,12 @@
   ...
 }:
 
+let
+  wallpaper = pkgs.fetchurl {
+    url = "https://files.feliciterra.com/public/51dab3d6d35e/dav/Galaxy_3.png";
+    hash = "sha256-ug7hhF4Tp9upxF+E6HjCVRnYtBREOAJ0MlMJwtaIvw0=";
+  };
+in
 {
   home.packages = with pkgs; [
     kdePackages.konsole
@@ -87,9 +93,11 @@
       appearance = {
         showMediaControls = true;
         alwaysShowClock = true;
-        wallpaperPictureOfTheDay.provider = "apod";
+        wallpaper = wallpaper;
       };
     };
+
+    workspace.wallpaper = wallpaper;
 
     kwin = {
       effects = {
