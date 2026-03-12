@@ -1,4 +1,16 @@
+{ pkgs, ... }:
+
+let
+  wallpaper = pkgs.fetchurl {
+    url = "https://files.feliciterra.com/public/559d3580ba88/dav/Space_Wallpaper_Desktop.webp";
+    hash = "sha256-q/oL1JCoR/cYv+3tgpvcVEKh4s5O0rV5hwxJhOX+tWs=";
+  };
+in
 {
+  system.activationScripts.postUserActivation.text = ''
+    osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"${wallpaper}\""
+  '';
+
   system.defaults = {
     dock = {
       autohide = true;
