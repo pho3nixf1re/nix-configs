@@ -109,6 +109,11 @@ in
       };
     };
 
+    krunner = {
+      position = "center";
+      historyBehavior = "enableAutoComplete";
+    }
+
     shortcuts = {
       "services/org.kde.krunner.desktop"._launch = [
         "Search"
