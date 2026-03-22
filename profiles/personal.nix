@@ -7,6 +7,7 @@
     ../modules/home/dev.nix
     ../modules/home/personal-apps.nix
     ../modules/home/gaming-tools.nix
+    ../modules/home/wezterm/wezterm.nix
     ../modules/home/neovim/neovim.nix
     ../modules/home/git/git.nix
     ../modules/home/containers/containers.nix

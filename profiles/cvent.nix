@@ -2,6 +2,7 @@
   imports = [
     ../modules/home/base.nix
     ../modules/home/zsh/zsh.nix
+    ../modules/home/wezterm/wezterm.nix
     ../modules/home/starship/starship.nix
     ../modules/home/ssh/ssh.nix
     ../modules/home/git/git.nix
