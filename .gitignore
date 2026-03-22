@@ -20,6 +20,9 @@ Thumbs.db
 # Local configuration overrides
 *.local
 
+# Ignore Claude code configuration
+.claude
+
 # Backup files
 *.bak
 *.backup
