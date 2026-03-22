@@ -5,9 +5,10 @@ return {
   opts = {
     options = {
       opt = {
-        relativenumber = true, -- relative line numbers
-        number         = true, -- absolute line number on current line
-        spell          = true,
+        relativenumber = true,
+        number         = true,
+        -- Using `codebook` LSP for spelling.
+        spell          = false,
         signcolumn     = "yes",
         wrap           = false,
       },
