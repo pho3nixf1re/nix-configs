@@ -22,6 +22,10 @@
 
   programs.firefox.enable = true;
 
+  programs.claude-code = {
+    enable = true;
+  };
+
   # Configure SMB mounts
   services.smb-mounts = {
     enable = true;
