@@ -3,6 +3,8 @@
 {
   programs.vscode.enable = true;
 
+  programs.lazygit.enable = true;
+
   home.packages = with pkgs; [
     # Development runtimes.
     nodejs

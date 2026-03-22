@@ -12,6 +12,9 @@
 
   home.packages = with pkgs; [
     neovide
+
+    # AstroNVim integrates with LazyGit.
+    lazygit
   ];
 
   # Lua modules live at ~/.config/nvim/lua/ alongside Home Manager's init.lua.
