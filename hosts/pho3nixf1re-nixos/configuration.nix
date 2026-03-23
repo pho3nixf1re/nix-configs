@@ -80,6 +80,20 @@
     ];
   };
 
+  # Auto-mount other drives at boot.
+  fileSystems."/run/media/pho3nixf1re/linux-extras" = {
+    device = "/dev/disk/by-label/linux-extras";
+    fsType = "ext4";
+    options = [
+      "defaults"
+      "nofail"
+    ];
+  };
+
+  systemd.tmpfiles.rules = [
+    "z /run/media/pho3nixf1re/linux-extras 0755 pho3nixf1re users -"
+  ];
+
   networking.hostName = "pho3nixf1re-nixos";
 
   # Enable networking
@@ -115,7 +129,6 @@
     # kde connect (phone app) port.
     1716
   ];
-
 
   # mDNS daemon.
   services.avahi = {
@@ -174,7 +187,8 @@
   security.sudo = {
     enable = true;
     extraConfig = ''
-      Defaults timestamp_timeout=60
+      
+            Defaults timestamp_timeout=60
     '';
     extraRules = [
       {
