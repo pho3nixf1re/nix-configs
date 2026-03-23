@@ -30,7 +30,7 @@
     };
 
     # Fork of nixpkgs with a fixed localstack package (localstack-ext dependency)
-    nixpkgs-localstack.url = "github:pho3nixf1re/nixpkgs/915284cc5af0bfcbc42c303f27e8affe2909b8bb";
+    nixpkgs-localstack.url = "github:pho3nixf1re/nixpkgs/776e3672eef113cac43707ca7355d77d6544ac94";
 
     # Optional: Declarative tap management
     homebrew-core = {
