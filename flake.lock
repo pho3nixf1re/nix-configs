@@ -140,17 +140,17 @@
     },
     "nixpkgs-localstack": {
       "locked": {
-        "lastModified": 1773783818,
-        "narHash": "sha256-k2wU+zBVd2D08tqU+yexGVvrSVzrsx/AQSntIpYPyqw=",
+        "lastModified": 1774286925,
+        "narHash": "sha256-5hAI4OW1TNHjawiM3h6vn8t3DXtsIlDa+/9Kg9rscxE=",
         "owner": "pho3nixf1re",
         "repo": "nixpkgs",
-        "rev": "915284cc5af0bfcbc42c303f27e8affe2909b8bb",
+        "rev": "776e3672eef113cac43707ca7355d77d6544ac94",
         "type": "github"
       },
       "original": {
         "owner": "pho3nixf1re",
         "repo": "nixpkgs",
-        "rev": "915284cc5af0bfcbc42c303f27e8affe2909b8bb",
+        "rev": "776e3672eef113cac43707ca7355d77d6544ac94",
         "type": "github"
       }
     },
