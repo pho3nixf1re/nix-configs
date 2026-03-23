@@ -14,6 +14,10 @@ return {
         root_dir = require("lspconfig.util").root_pattern(
           "codebook.toml", ".codebook.toml", ".git"
         ),
+        on_attach = function(client, _)
+          local ns = vim.lsp.diagnostic.get_namespace(client.id)
+          vim.diagnostic.config({ virtual_text = false }, ns)
+        end,
       },
       ts_ls = {
         filetypes = {
