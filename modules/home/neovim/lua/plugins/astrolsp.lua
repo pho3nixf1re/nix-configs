@@ -6,6 +6,7 @@ return {
   opts = function(plugin, opts)
     opts.servers = opts.servers or {}
     table.insert(opts.servers, "codebook")
+    table.insert(opts.servers, "eslint")
 
     opts.config = require("astrocore").extend_tbl(opts.config or {}, {
       codebook = {
@@ -30,6 +31,16 @@ return {
           "javascript", "javascriptreact", "javascript.jsx",
           "typescript", "typescriptreact", "typescript.tsx",
         },
+        root_dir = require("lspconfig.util").root_pattern(
+          ".oxlintrc.json", "oxlint.json"
+        ),
+      },
+      eslint = {
+        root_dir = require("lspconfig.util").root_pattern(
+          ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json",
+          ".eslintrc.yaml", ".eslintrc.yml",
+          "eslint.config.js", "eslint.config.mjs", "eslint.config.cjs"
+        ),
       },
     })
   end,

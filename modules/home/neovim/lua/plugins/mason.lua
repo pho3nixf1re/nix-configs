@@ -5,9 +5,11 @@ return {
   opts = {
     ensure_installed = {
       "codebook",
+      "eslint-lsp",
       "nixfmt",
       "oxfmt",
       "oxlint",
+      "prettier",
       "typescript-language-server", -- ts_ls
     },
   },
