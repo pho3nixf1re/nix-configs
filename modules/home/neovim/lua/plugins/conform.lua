@@ -5,7 +5,7 @@ local js_ts_filetypes = {
   "typescript", "typescriptreact", "typescript.tsx",
 }
 
-local oxfmt_configs   = { "oxfmt.toml", ".oxfmt.toml" }
+local oxfmt_configs = { "oxfmt.toml", ".oxfmt.toml" }
 local prettier_configs = {
   ".prettierrc", ".prettierrc.json",
   ".prettierrc.yml", ".prettierrc.yaml",
@@ -26,14 +26,13 @@ local function js_ts_formatters(bufnr)
   return formatters
 end
 
-local ft_formatters = {}
-for _, ft in ipairs(js_ts_filetypes) do
-  ft_formatters[ft] = js_ts_formatters
-end
-
 return {
   "stevearc/conform.nvim",
-  opts = {
-    formatters_by_ft = ft_formatters,
-  },
+  opts = function(_, opts)
+    opts.formatters_by_ft = opts.formatters_by_ft or {}
+    for _, ft in ipairs(js_ts_filetypes) do
+      opts.formatters_by_ft[ft] = js_ts_formatters
+    end
+    return opts
+  end,
 }
