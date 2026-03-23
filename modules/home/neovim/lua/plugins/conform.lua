@@ -5,42 +5,35 @@ local js_ts_filetypes = {
   "typescript", "typescriptreact", "typescript.tsx",
 }
 
-local function has_config(files)
-  return function(_, ctx)
-    return vim.fs.find(files, { upward = true, path = ctx.dirname })[1] ~= nil
-  end
-end
+local oxfmt_configs   = { "oxfmt.toml", ".oxfmt.toml" }
+local prettier_configs = {
+  ".prettierrc", ".prettierrc.json",
+  ".prettierrc.yml", ".prettierrc.yaml",
+  ".prettierrc.js", ".prettierrc.cjs", ".prettierrc.mjs",
+  "prettier.config.js", "prettier.config.cjs", "prettier.config.mjs",
+}
 
-local oxfmt_condition = has_config({ "oxfmt.toml", ".oxfmt.toml" })
-local prettier_condition = has_config({
-  ".prettierrc",
-  ".prettierrc.json",
-  ".prettierrc.yml",
-  ".prettierrc.yaml",
-  ".prettierrc.js",
-  ".prettierrc.cjs",
-  ".prettierrc.mjs",
-  "prettier.config.js",
-  "prettier.config.cjs",
-  "prettier.config.mjs",
-})
+local function js_ts_formatters(bufnr)
+  local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+  local opts = { upward = true, path = dir }
+  local formatters = {}
+  if vim.fs.find(oxfmt_configs, opts)[1] then
+    table.insert(formatters, "oxfmt")
+  end
+  if vim.fs.find(prettier_configs, opts)[1] then
+    table.insert(formatters, "prettier")
+  end
+  return formatters
+end
 
 local ft_formatters = {}
 for _, ft in ipairs(js_ts_filetypes) do
-  ft_formatters[ft] = { "oxfmt", "prettier" }
+  ft_formatters[ft] = js_ts_formatters
 end
 
 return {
   "stevearc/conform.nvim",
   opts = {
     formatters_by_ft = ft_formatters,
-    formatters = {
-      oxfmt = {
-        condition = oxfmt_condition,
-      },
-      prettier = {
-        condition = prettier_condition,
-      },
-    },
   },
 }
