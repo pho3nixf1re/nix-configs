@@ -105,6 +105,7 @@
             ./modules/system/common.nix
             ./modules/system/store-cleanup.nix
             ./modules/system/vr.nix
+            ./modules/system/utils.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
