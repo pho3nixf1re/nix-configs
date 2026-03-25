@@ -17,7 +17,7 @@ return {
         ),
         on_attach = function(client, _)
           local ns = vim.lsp.diagnostic.get_namespace(client.id)
-          vim.diagnostic.config({ virtual_text = false }, ns)
+          vim.diagnostic.config({ virtual_text = false, signs = false }, ns)
         end,
       },
       ts_ls = {
