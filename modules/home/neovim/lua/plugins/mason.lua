@@ -6,7 +6,6 @@ return {
     ensure_installed = {
       "codebook",
       "eslint-lsp",
-      "nixfmt",
       "oxfmt",
       "oxlint",
       "prettier",
