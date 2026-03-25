@@ -29,7 +29,7 @@ if vim.g.neovide then
   -- "auto" reads the system appearance and updates background on change.
   vim.g.neovide_theme = "auto"
 
-  vim.o.guifont = "FiraCode Nerd Font:h13"
+  vim.o.guifont = "FiraCode Nerd Font:h18"
   vim.g.neovide_cursor_animation_length = 0.1
   vim.g.neovide_scroll_animation_length = 0.3
   vim.g.neovide_padding_top    = 4
