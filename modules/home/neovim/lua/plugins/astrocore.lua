@@ -5,6 +5,7 @@ return {
   opts = {
     options = {
       opt = {
+        colorcolumn    = "80",
         relativenumber = true,
         number         = true,
         -- Using `codebook` LSP for spelling.
