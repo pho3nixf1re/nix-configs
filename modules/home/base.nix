@@ -66,6 +66,10 @@
       autojump
       tmux
 
+      # Compression tools.
+      unzip
+      p7zip
+
       # nix related
       #
       # It provides the command `nom` works just like `nix`
