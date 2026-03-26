@@ -12,6 +12,7 @@ return {
 				spell = false,
 				signcolumn = "yes",
 				wrap = false,
+				eol = true,
 			},
 		},
 		-- Add or override key mappings here, e.g.:
