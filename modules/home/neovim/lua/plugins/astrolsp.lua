@@ -8,7 +8,7 @@ return {
 		table.insert(opts.servers, "codebook")
 		table.insert(opts.servers, "eslint")
 
-		opts.config = require("astrocore").extend_tbl(opts.config or {}, {
+		opts.config = {
 			codebook = {
 				cmd = { "codebook-lsp", "serve" },
 				filetypes = { "*" },
@@ -18,40 +18,27 @@ return {
 					vim.diagnostic.config({ virtual_text = false, signs = false }, ns)
 				end,
 			},
-			ts_ls = {
-				filetypes = {
-					"javascript",
-					"javascriptreact",
-					"javascript.jsx",
-					"typescript",
-					"typescriptreact",
-					"typescript.tsx",
-				},
-			},
-			oxc_language_server = {
-				filetypes = {
-					"javascript",
-					"javascriptreact",
-					"javascript.jsx",
-					"typescript",
-					"typescriptreact",
-					"typescript.tsx",
-				},
-				root_dir = require("lspconfig.util").root_pattern(".oxlintrc.json", "oxlint.json"),
-			},
-			eslint = {
-				root_dir = require("lspconfig.util").root_pattern(
-					".eslintrc",
-					".eslintrc.js",
-					".eslintrc.cjs",
-					".eslintrc.json",
-					".eslintrc.yaml",
-					".eslintrc.yml",
-					"eslint.config.js",
-					"eslint.config.mjs",
-					"eslint.config.cjs"
-				),
-			},
-		})
+		}
+
+		-- opts.config = require("astrocore").extend_tbl(opts.config or {}, {
+		-- 	prettier = {
+		-- 		root_dir = require("lspconfig.util").root_pattern(
+		-- 			".prettierrc",
+		-- 			".prettierrc.js",
+		-- 			".prettierrc.ts",
+		-- 			".prettierrc.cjs",
+		-- 			".prettierrc.mjs",
+		-- 			".prettierrc.json",
+		-- 			".prettierrc.yaml",
+		-- 			".prettierrc.yml",
+		-- 			".prettierrc.toml",
+		-- 			"prettier.config.js",
+		-- 			"prettier.config.ts",
+		-- 			"prettier.config.mjs",
+		-- 			"prettier.config.cjs"
+		-- 		),
+		-- 		single_file_support = false,
+		-- 	},
+		-- })
 	end,
 }
