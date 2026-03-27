@@ -133,7 +133,7 @@
       homeConfigurations."deck" = home-manager.lib.homeManagerConfiguration {
         pkgs = deckPkgs;
         extraSpecialArgs = {
-          localstackPkgs = makeLocalstackPkgs deckPkgs.system;
+          localstackPkgs = makeLocalstackPkgs deckPkgs.stdenv.hostPlatform.system;
         };
         modules = [
           plasma-manager.homeModules.plasma-manager
@@ -154,7 +154,7 @@
               { pkgs, ... }:
               {
                 home-manager.extraSpecialArgs = {
-                  localstackPkgs = makeLocalstackPkgs pkgs.system;
+                  localstackPkgs = makeLocalstackPkgs pkgs.stdenv.hostPlatform.system;
                 };
               }
             )
