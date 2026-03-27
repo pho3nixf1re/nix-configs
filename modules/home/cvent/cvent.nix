@@ -30,4 +30,15 @@
   programs.zsh.shellAliases = lib.mkIf config.programs.zsh.enable {
     st-run = "nix develop --impure \"$NIX_FLAKE_PATH#iterm-automation\" --command python ~/Workspace/socialtables/repo-runner/launchers/iterm2/services.py";
   };
+
+  # Global oxfmt config – matches SocialTables' Prettier style.
+  # Only options that differ from oxfmt's own defaults are listed.
+  home.file.".oxfmtrc.json".text = builtins.toJSON {
+    "$schema" =
+      "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxfmt/configuration_schema.json";
+    bracketSpacing = false;
+    printWidth = 80;
+    singleQuote = true;
+    trailingComma = "es5";
+  };
 }

@@ -19,26 +19,5 @@ return {
 				end,
 			},
 		}
-
-		-- opts.config = require("astrocore").extend_tbl(opts.config or {}, {
-		-- 	prettier = {
-		-- 		root_dir = require("lspconfig.util").root_pattern(
-		-- 			".prettierrc",
-		-- 			".prettierrc.js",
-		-- 			".prettierrc.ts",
-		-- 			".prettierrc.cjs",
-		-- 			".prettierrc.mjs",
-		-- 			".prettierrc.json",
-		-- 			".prettierrc.yaml",
-		-- 			".prettierrc.yml",
-		-- 			".prettierrc.toml",
-		-- 			"prettier.config.js",
-		-- 			"prettier.config.ts",
-		-- 			"prettier.config.mjs",
-		-- 			"prettier.config.cjs"
-		-- 		),
-		-- 		single_file_support = false,
-		-- 	},
-		-- })
 	end,
 }

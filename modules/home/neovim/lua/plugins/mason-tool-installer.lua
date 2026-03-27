@@ -8,7 +8,6 @@ return {
 			"eslint-lsp",
 			"oxfmt",
 			"oxlint",
-			"prettier",
 			"stylua",
 			"typescript-language-server", -- ts_ls
 		},
