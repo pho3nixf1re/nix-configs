@@ -31,5 +31,5 @@
   xdg.configFile."neovide" = {
     source = ./neovide;
     recursive = true;
-  }
+  };
 }
