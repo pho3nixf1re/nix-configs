@@ -24,5 +24,6 @@
 
     # The times be a changin', and so must I.
     github-copilot-cli
+    opencode
   ];
 }
