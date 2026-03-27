@@ -27,4 +27,9 @@
   home.sessionVariables = {
     EDITOR = "nvim";
   };
+
+  xdg.configFile."neovide" = {
+    source = ./neovide;
+    recursive = true;
+  }
 }

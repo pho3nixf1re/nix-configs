@@ -61,6 +61,7 @@
       # Networking tools.
       httpie
       curl
+      wget
 
       # Needed for OH-MY-ZSH plugins.
       autojump

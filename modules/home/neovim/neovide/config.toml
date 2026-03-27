@@ -1,0 +1,11 @@
+# MacOS configuration.
+macos-native-tabs = true
+macos-pinned-hotkey = "cmd+ctrl+z"
+macos-switcher-hotkey = "cmd+ctrl+n"
+macos-tab-prev-hotkey = "cmd+shift+["
+macos-tab-next-hotkey = "cmd+shift+]"
+
+[font]
+normal = ["FiraCode Nerd Font"]
+size = 18.0
+
