@@ -1,6 +1,5 @@
 -- AstroUI configuration – sets the default colorscheme and wires up
--- automatic dark/light switching when vim.o.background changes (driven by
--- Neovide's neovide_theme = "auto" which mirrors the OS appearance).
+-- automatic dark/light switching when vim.o.background changes.
 return {
 	"AstroNvim/astroui",
 	opts = {
