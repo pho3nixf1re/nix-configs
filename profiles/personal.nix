@@ -1,4 +1,8 @@
-{ config, ... }:
+{
+  config,
+  sopsAgeKeyFile ? "${config.xdg.configHome}/sops/age/keys.txt",
+  ...
+}:
 
 {
   imports = [
@@ -41,6 +45,6 @@
   # Configure sops
   sops = {
     defaultSopsFile = ../secrets/smb.yaml;
-    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
+    age.keyFile = sopsAgeKeyFile;
   };
 }

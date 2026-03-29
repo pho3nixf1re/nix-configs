@@ -1,4 +1,10 @@
-{ pkgs, pkgsKernel, ... }:
+{
+  pkgs,
+  pkgsKernel,
+  primaryUser,
+  sopsAgeKeyFile,
+  ...
+}:
 
 {
   hardware.enableRedistributableFirmware = true;
@@ -226,7 +232,7 @@
     #media-session.enable = true;
   };
 
-  users.users.pho3nixf1re = {
+  users.users.${primaryUser} = {
     isNormalUser = true;
     description = "Matthew Turney";
     extraGroups = [
@@ -282,7 +288,7 @@
     # Certain features, including CLI integration and system authentication
     # support, require enabling PolKit integration on some desktop environments
     # (e.g. Plasma).
-    polkitPolicyOwners = [ "pho3nixf1re" ];
+    polkitPolicyOwners = [ primaryUser ];
   };
 
   hardware.bluetooth.enable = true;
@@ -341,6 +347,7 @@
     };
   };
 
+  sops.age.keyFile = sopsAgeKeyFile;
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave
