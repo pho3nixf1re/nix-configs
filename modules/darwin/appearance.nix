@@ -7,9 +7,9 @@ let
   };
 in
 {
-  system.activationScripts.postUserActivation.text = ''
-    osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"${wallpaper}\""
-  '';
+  # system.activationScripts.postUserActivation.text = ''
+  #   osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"${wallpaper}\""
+  # '';
 
   system.defaults = {
     dock = {
