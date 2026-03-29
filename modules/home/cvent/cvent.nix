@@ -41,4 +41,12 @@
     singleQuote = true;
     trailingComma = "es5";
   };
+
+  # Combined CA certificate created with Netskope.
+  home.sessionVariables.SSL_CERT_FILE = "${config.xdg.configHome}/ssl/nscacert.pem";
+
+  # wget needs to use combined cert from Netskope.
+  home.file.".wgetrc".text = ''
+    ca-certificate=${config.xdg.configHome}/ssl/nscacert.pem
+  '';
 }
