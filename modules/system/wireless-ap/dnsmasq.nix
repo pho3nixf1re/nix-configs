@@ -6,6 +6,9 @@ in
 lib.mkIf cfg.enable {
   services.dnsmasq = {
     enable = true;
+    # Keep host DNS resolution managed by NetworkManager/system resolver.
+    # This dnsmasq instance is only for AP clients.
+    resolveLocalQueries = false;
     settings = {
       # Only bind to the AP interface — avoids conflicts with NetworkManager's
       # internal dnsmasq instance which listens on other interfaces.
@@ -16,7 +19,11 @@ lib.mkIf cfg.enable {
       dhcp-range = cfg.dhcpRange;
 
       # Forward upstream DNS queries to the system resolver.
-      server = [ "1.1.1.1" "8.8.8.8" ];
+      server = [
+        "10.0.0.1"
+        "1.1.1.1"
+        "8.8.8.8"
+      ];
 
       # Suppress "query from non-local network" log noise.
       log-dhcp = true;
