@@ -143,6 +143,7 @@
   time.timeZone = "America/Chicago";
 
   # Select internationalization properties.
+  # Select internationalization properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -189,10 +190,10 @@
   security.sudo = {
     enable = true;
     extraConfig = ''
-      
-            
-            
-                      Defaults timestamp_timeout=60
+
+
+
+      Defaults timestamp_timeout=60
     '';
     extraRules = [
       {

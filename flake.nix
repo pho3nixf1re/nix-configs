@@ -106,6 +106,8 @@
             ./modules/system/store-cleanup.nix
             ./modules/system/vr.nix
             ./modules/system/utils.nix
+            ./modules/system/wireless-ap
+            sops-nix.nixosModules.sops
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
