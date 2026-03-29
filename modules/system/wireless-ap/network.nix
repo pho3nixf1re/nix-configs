@@ -1,11 +1,31 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.local.wirelessAp;
   ipSvc = "wireless-ap-ip-${cfg.wlanInterface}.service";
+  rfkillSvc = "wireless-ap-rfkill-unblock-${cfg.wlanInterface}.service";
   devUnit = "sys-subsystem-net-devices-${cfg.wlanInterface}.device";
 in
 lib.mkIf cfg.enable {
+  # Some adapters come up soft-blocked after boot/resume/hotplug.
+  # Unblock WLAN before hostapd starts.
+  systemd.services."wireless-ap-rfkill-unblock-${cfg.wlanInterface}" = {
+    description = "Unblock WLAN rfkill for AP interface ${cfg.wlanInterface}";
+    after = [ devUnit ];
+    bindsTo = [ devUnit ];
+    before = [ "hostapd.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.util-linux}/bin/rfkill unblock wlan";
+    };
+    wantedBy = lib.mkForce [ ];
+  };
+
   # Assign a static IP when the USB adapter appears.
   # Not added to multi-user.target — the udev rule below triggers it on hotplug.
   # BindsTo ensures the service stops (and IP is released) when the adapter is unplugged.
@@ -29,7 +49,7 @@ lib.mkIf cfg.enable {
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="net", NAME=="${cfg.wlanInterface}", \
       TAG+="systemd", \
-      ENV{SYSTEMD_WANTS}+="${ipSvc} hostapd.service dnsmasq.service"
+      ENV{SYSTEMD_WANTS}+="${rfkillSvc} ${ipSvc} hostapd.service dnsmasq.service"
   '';
 
   # NAT from wlan → wan so clients can reach the internet.

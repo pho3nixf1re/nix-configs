@@ -1,7 +1,14 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.local.wirelessAp;
+  devUnit = "sys-subsystem-net-devices-${cfg.wlanInterface}.device";
+  rfkillSvc = "wireless-ap-rfkill-unblock-${cfg.wlanInterface}.service";
 in
 lib.mkIf cfg.enable {
   services.hostapd = {
@@ -34,8 +41,13 @@ lib.mkIf cfg.enable {
   # Hotplug: started by udev rule in network.nix when the adapter appears.
   # Removed from multi-user.target to avoid 90s boot timeout when adapter is absent.
   systemd.services.hostapd = {
-    after = [ "sys-subsystem-net-devices-${cfg.wlanInterface}.device" ];
-    bindsTo = [ "sys-subsystem-net-devices-${cfg.wlanInterface}.device" ];
+    requires = [ rfkillSvc ];
+    after = [
+      devUnit
+      rfkillSvc
+    ];
+    bindsTo = [ devUnit ];
+    serviceConfig.ExecCondition = "${pkgs.bash}/bin/bash -euc 'for f in /sys/class/net/${cfg.wlanInterface}/phy80211/rfkill*/hard; do [ -e \"$f\" ] || exit 0; read -r blocked < \"$f\"; [ \"$blocked\" = \"1\" ] && exit 1; done'";
     wantedBy = lib.mkForce [ ];
   };
 }
