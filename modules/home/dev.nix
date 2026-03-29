@@ -25,5 +25,9 @@
     # The times be a changin', and so must I.
     github-copilot-cli
     opencode
+
+    # Package managers to support tool installations.
+    # rust
+    cargo
   ];
 }
