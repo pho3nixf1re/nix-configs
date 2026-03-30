@@ -5,3 +5,7 @@ creation_rules:
     key_groups:
       - age:
           - *pho3nixf1re
+  - path_regex: secrets/wifi\.yaml$
+    key_groups:
+      - age:
+          - *pho3nixf1re

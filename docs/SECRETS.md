@@ -7,7 +7,7 @@ This repository uses **sops-nix** with **1Password** as the source of truth for 
 - **1Password** stores everything: secrets AND SSH keys (source of truth)
 - **Age keys derived from 1Password SSH keys** on each machine
 - **Local encrypted files** are generated from 1Password on each machine
-- **Nothing secret is committed** to git (even encrypted files are gitignored)
+- **Most secrets are not committed** — SMB credentials are generated locally from 1Password and gitignored; WiFi passphrase is committed encrypted
 - **Key setup is separate from secret encryption** — new machines only need the age key to decrypt
 - **Setup scripts are idempotent** — safe to re-run at any time
 
@@ -80,9 +80,10 @@ SMB_CREDENTIALS_ITEM="op://Personal/My NAS" ./setup-smb-secrets.sh
 
 This will:
 - Automatically run `setup-age-key.sh` if no age key exists yet
-- Update `.sops.yaml` with your public key
 - Fetch SMB credentials from 1Password
 - Create `secrets/smb.yaml` locally (encrypted, gitignored)
+
+Note: `.sops.yaml` is managed in the repo and is not modified by this script.
 
 ## Using 1Password SSH Agent (Optional)
 
@@ -138,13 +139,15 @@ To regenerate the age key (e.g., if the SSH key changed in 1Password):
 │  (auto-calls age key  │
 │   script if needed)   │
 │                       │
-│  1. Update .sops.yaml │
-│  2. Fetch SMB creds   │
-│  3. Encrypt secrets   │
+│  1. Fetch SMB creds   │
+│  2. Encrypt secrets   │
 └───────────┬───────────┘
             ↓
 ┌──────────────────┐
 │ secrets/smb.yaml │  ← Encrypted, local only, gitignored
+└────────┬─────────┘
+┌──────────────────┐
+│ secrets/wifi.yaml│  ← Encrypted, committed to git
 └────────┬─────────┘
          │
          │ sops-nix (automatic at build time)
@@ -173,11 +176,20 @@ To regenerate the age key (e.g., if the SSH key changed in 1Password):
 
 ## Adding New Secrets
 
+Two patterns depending on whether the secret comes from 1Password or is set manually:
+
+### 1Password-backed secret (e.g. SMB credentials)
 1. Store the secret in 1Password
-2. Create a new `setup-<name>-secrets.sh` script (or extend an existing one)
-3. Have it call `./setup-age-key.sh` if `$AGE_KEY_FILE` doesn't exist (same pattern as `setup-smb-secrets.sh`)
-4. Add it to the sops YAML structure
-5. Configure sops-nix module to use it
+2. Create a `setup-<name>-secrets.sh` script following the same pattern as `setup-smb-secrets.sh`
+3. Have it call `./setup-age-key.sh` if `$AGE_KEY_FILE` doesn't exist
+4. Add a creation rule to `.sops.yaml` for the new secrets file
+5. Configure the sops-nix module to use it
+
+### Manually managed secret (e.g. WiFi passphrase)
+1. Add a creation rule to `.sops.yaml` for `secrets/<name>.yaml`
+2. Run `sops secrets/<name>.yaml` to create and encrypt the file
+3. Commit the encrypted file to git
+4. Configure the sops-nix module to use it — system secrets use `sops.secrets.<key>`, HM secrets use `sops.secrets.<key>` under the HM sops module
 
 ## On New Machines
 

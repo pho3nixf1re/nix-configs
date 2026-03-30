@@ -87,10 +87,16 @@
           config.allowUnfree = true;
           overlays = [ localstackFixOverlay ];
         };
+      primaryUser = "pho3nixf1re";
+      primaryUserSopsAgeKeyFile = "/home/${primaryUser}/.config/sops/age/keys.txt";
     in
     {
       nixosConfigurations = {
         pho3nixf1re-nixos = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit primaryUser;
+            sopsAgeKeyFile = primaryUserSopsAgeKeyFile;
+          };
           modules = [
             { nixpkgs.overlays = [ localstackFixOverlay ]; }
             (
@@ -98,6 +104,8 @@
               {
                 home-manager.extraSpecialArgs = {
                   localstackPkgs = makeLocalstackPkgs pkgs.system;
+                  inherit primaryUser;
+                  sopsAgeKeyFile = primaryUserSopsAgeKeyFile;
                 };
               }
             )
@@ -106,6 +114,8 @@
             ./modules/system/store-cleanup.nix
             ./modules/system/vr.nix
             ./modules/system/utils.nix
+            ./modules/system/wireless-ap
+            sops-nix.nixosModules.sops
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -115,16 +125,18 @@
                 plasma-manager.homeModules.plasma-manager
                 sops-nix.homeManagerModules.sops
               ];
-              home-manager.users.pho3nixf1re =
-                { ... }:
-                {
-                  imports = [
-                    ./hosts/pho3nixf1re-nixos/home.nix
-                    ./profiles/personal.nix
-                    ./profiles/desktop-system.nix
-                    ./profiles/common.nix
-                  ];
-                };
+              home-manager.users = {
+                ${primaryUser} =
+                  { ... }:
+                  {
+                    imports = [
+                      ./hosts/pho3nixf1re-nixos/home.nix
+                      ./profiles/personal.nix
+                      ./profiles/desktop-system.nix
+                      ./profiles/common.nix
+                    ];
+                  };
+              };
             }
           ];
         };

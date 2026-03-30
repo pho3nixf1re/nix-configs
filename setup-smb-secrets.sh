@@ -60,33 +60,9 @@ if [ -f secrets/smb.yaml ]; then
     fi
 fi
 
-# Get age public key from existing key file
-if command -v age-keygen &> /dev/null; then
-    AGE_PUBLIC_KEY=$(age-keygen -y "$AGE_KEY_FILE")
-else
-    AGE_PUBLIC_KEY=$(nix shell nixpkgs#age --quiet --command age-keygen -y "$AGE_KEY_FILE")
-fi
-echo "   Age public key: $AGE_PUBLIC_KEY"
-
-# Step 1: Update .sops.yaml
+# Step 1: Fetch SMB credentials from 1Password
 echo
-echo "📝 Step 1: Updating .sops.yaml..."
-
-cat > .sops.yaml << EOF
-keys:
-  - &pho3nixf1re $AGE_PUBLIC_KEY
-creation_rules:
-  - path_regex: secrets/smb\.yaml\$
-    key_groups:
-      - age:
-          - *pho3nixf1re
-EOF
-
-echo "✅ .sops.yaml updated"
-
-# Step 2: Fetch SMB credentials from 1Password
-echo
-echo "🔐 Step 2: Fetching SMB credentials from 1Password..."
+echo "🔐 Step 1: Fetching SMB credentials from 1Password..."
 
 USERNAME=$(op read "$SMB_CREDENTIALS_ITEM/username")
 if [ -z "$USERNAME" ]; then
@@ -104,9 +80,9 @@ fi
 
 echo "✅ Credentials retrieved"
 
-# Step 3: Create and encrypt the secrets file
+# Step 2: Create and encrypt the secrets file
 echo
-echo "🔒 Step 3: Creating encrypted secrets file..."
+echo "🔒 Step 2: Creating encrypted secrets file..."
 mkdir -p secrets
 
 cat > "secrets/smb.yaml" << EOF
@@ -133,7 +109,7 @@ echo "✓ Age key at $AGE_KEY_FILE"
 echo "✓ Secrets encrypted in secrets/smb.yaml (SAFE TO COMMIT)"
 echo
 echo "Next steps:"
-echo "  1. Commit: git add secrets/smb.yaml .sops.yaml && git commit -m 'Update encrypted secrets'"
+echo "  1. Commit: git add secrets/smb.yaml && git commit -m 'Update encrypted secrets'"
 echo "  2. Rebuild: sudo nixos-rebuild switch --flake .#pho3nixf1re-nixos"
 echo "  3. Check mount: systemctl --user status smb-mount-feliciterra"
 echo "  4. Verify: ls ~/mnt/feliciterra"

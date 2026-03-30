@@ -1,4 +1,10 @@
-{ pkgs, pkgsKernel, ... }:
+{
+  pkgs,
+  pkgsKernel,
+  primaryUser,
+  sopsAgeKeyFile,
+  ...
+}:
 
 {
   hardware.enableRedistributableFirmware = true;
@@ -143,6 +149,7 @@
   time.timeZone = "America/Chicago";
 
   # Select internationalization properties.
+  # Select internationalization properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
@@ -189,10 +196,10 @@
   security.sudo = {
     enable = true;
     extraConfig = ''
-      
-            
-            
-                      Defaults timestamp_timeout=60
+
+
+
+      Defaults timestamp_timeout=60
     '';
     extraRules = [
       {
@@ -225,7 +232,7 @@
     #media-session.enable = true;
   };
 
-  users.users.pho3nixf1re = {
+  users.users.${primaryUser} = {
     isNormalUser = true;
     description = "Matthew Turney";
     extraGroups = [
@@ -281,7 +288,7 @@
     # Certain features, including CLI integration and system authentication
     # support, require enabling PolKit integration on some desktop environments
     # (e.g. Plasma).
-    polkitPolicyOwners = [ "pho3nixf1re" ];
+    polkitPolicyOwners = [ primaryUser ];
   };
 
   hardware.bluetooth.enable = true;
@@ -338,6 +345,17 @@
     envfs = {
       enable = true;
     };
+  };
+
+  sops.age.keyFile = sopsAgeKeyFile;
+
+  # Enable custom wireless AP for VR streaming over dedicated connection.
+  local.wirelessAp = {
+    enable = true;
+    wlanInterface = "wlp42s0f3u1";
+    wanInterface = "enp39s0";
+    ssid = "VR-Streaming";
+    channel = 149;
   };
 
   # This value determines the NixOS release from which the default
