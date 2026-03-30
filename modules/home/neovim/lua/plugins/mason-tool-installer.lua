@@ -5,11 +5,16 @@ return {
 	opts = {
 		ensure_installed = {
 			"codebook",
+
+			-- JavaScript, Typescript
 			"eslint-lsp",
 			"oxfmt",
 			"oxlint",
-			"stylua",
 			"typescript-language-server", -- ts_ls
+
+			-- lua
+			"stylua",
+			"lua-language-server", -- lua_ls
 		},
 	},
 }
