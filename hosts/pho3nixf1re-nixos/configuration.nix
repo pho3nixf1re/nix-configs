@@ -358,6 +358,15 @@
     channel = 149;
   };
 
+  # USB-attached wired router path for VR streaming experiments.
+  local.wiredVrRouter = {
+    enable = true;
+    lanInterface = "enp49s0f3u1c2";
+    wanInterface = "enp39s0";
+    lanConnectionName = "PrismmXR";
+    routerProvidesDhcp = true;
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave

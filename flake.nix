@@ -115,6 +115,7 @@
             ./modules/system/vr.nix
             ./modules/system/utils.nix
             ./modules/system/wireless-ap
+            ./modules/system/wired-vr-router
             sops-nix.nixosModules.sops
             home-manager.nixosModules.home-manager
             {
