@@ -9,6 +9,7 @@ let
   cfg = config.local.wirelessAp;
   ipSvc = "wireless-ap-ip-${cfg.wlanInterface}.service";
   rfkillSvc = "wireless-ap-rfkill-unblock-${cfg.wlanInterface}.service";
+  powerSaveSvc = "wireless-ap-powersave-off-${cfg.wlanInterface}.service";
   devUnit = "sys-subsystem-net-devices-${cfg.wlanInterface}.device";
 in
 lib.mkIf cfg.enable {
@@ -22,6 +23,23 @@ lib.mkIf cfg.enable {
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.util-linux}/bin/rfkill unblock wlan";
+    };
+    wantedBy = lib.mkForce [ ];
+  };
+
+  # Disable STA power saving for lower-latency AP behavior.
+  # Some drivers default to power save on, which can add jitter under bursty traffic.
+  systemd.services."wireless-ap-powersave-off-${cfg.wlanInterface}" = {
+    description = "Disable WiFi power save for AP interface ${cfg.wlanInterface}";
+    after = [
+      devUnit
+      rfkillSvc
+    ];
+    bindsTo = [ devUnit ];
+    before = [ "hostapd.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.iw}/bin/iw dev ${cfg.wlanInterface} set power_save off";
     };
     wantedBy = lib.mkForce [ ];
   };
@@ -49,7 +67,7 @@ lib.mkIf cfg.enable {
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="net", NAME=="${cfg.wlanInterface}", \
       TAG+="systemd", \
-      ENV{SYSTEMD_WANTS}+="${rfkillSvc} ${ipSvc} hostapd.service dnsmasq.service"
+      ENV{SYSTEMD_WANTS}+="${rfkillSvc} ${powerSaveSvc} ${ipSvc} hostapd.service dnsmasq.service"
   '';
 
   # NAT from wlan → wan so clients can reach the internet.

@@ -348,6 +348,16 @@
   };
 
   sops.age.keyFile = sopsAgeKeyFile;
+
+  # Enable custom wireless AP for VR streaming over dedicated connection.
+  local.wirelessAp = {
+    enable = true;
+    wlanInterface = "wlp42s0f3u1";
+    wanInterface = "enp39s0";
+    ssid = "VR-Streaming";
+    channel = 149;
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave
