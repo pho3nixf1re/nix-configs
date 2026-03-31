@@ -351,7 +351,7 @@
 
   # Enable custom wireless AP for VR streaming over dedicated connection.
   local.wirelessAp = {
-    enable = true;
+    enable = false;
     wlanInterface = "wlp42s0f3u1";
     wanInterface = "enp39s0";
     ssid = "VR-Streaming";
