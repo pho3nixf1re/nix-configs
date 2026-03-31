@@ -1,8 +1,8 @@
-{ localstackPkgs, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = [
-    localstackPkgs.localstack
+    pkgs.localstack
   ];
 
   programs.awscli.enable = true;

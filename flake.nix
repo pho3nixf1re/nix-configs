@@ -29,9 +29,6 @@
       url = "github:zhaofengli/nix-homebrew";
     };
 
-    # Fork of nixpkgs with a fixed localstack package (localstack-ext dependency)
-    nixpkgs-localstack.url = "github:pho3nixf1re/nixpkgs/776e3672eef113cac43707ca7355d77d6544ac94";
-
     # Optional: Declarative tap management
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
@@ -46,7 +43,6 @@
   outputs =
     {
       nixpkgs,
-      nixpkgs-localstack,
       home-manager,
       plasma-manager,
       sops-nix,
@@ -80,13 +76,6 @@
           };
         };
       };
-      makeLocalstackPkgs =
-        system:
-        import nixpkgs-localstack {
-          inherit system;
-          config.allowUnfree = true;
-          overlays = [ localstackFixOverlay ];
-        };
       primaryUser = "pho3nixf1re";
       primaryUserSopsAgeKeyFile = "/home/${primaryUser}/.config/sops/age/keys.txt";
     in
@@ -103,7 +92,6 @@
               { pkgs, ... }:
               {
                 home-manager.extraSpecialArgs = {
-                  localstackPkgs = makeLocalstackPkgs pkgs.system;
                   inherit primaryUser;
                   sopsAgeKeyFile = primaryUserSopsAgeKeyFile;
                 };
@@ -145,9 +133,6 @@
 
       homeConfigurations."deck" = home-manager.lib.homeManagerConfiguration {
         pkgs = deckPkgs;
-        extraSpecialArgs = {
-          localstackPkgs = makeLocalstackPkgs deckPkgs.stdenv.hostPlatform.system;
-        };
         modules = [
           plasma-manager.homeModules.plasma-manager
           sops-nix.homeManagerModules.sops
@@ -163,14 +148,6 @@
             {
               nixpkgs.overlays = [ localstackFixOverlay ];
             }
-            (
-              { pkgs, ... }:
-              {
-                home-manager.extraSpecialArgs = {
-                  localstackPkgs = makeLocalstackPkgs pkgs.stdenv.hostPlatform.system;
-                };
-              }
-            )
             nix-homebrew.darwinModules.nix-homebrew
             ./hosts/cvent-macos/configuration.nix
             ./modules/darwin/macos-apps.nix
