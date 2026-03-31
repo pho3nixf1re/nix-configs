@@ -32,7 +32,7 @@
   boot.supportedFilesystems = [ "ntfs" ];
 
   # Auto-mount NTFS drives at boot (using labels for stability)
-  fileSystems."/run/media/pho3nixf1re/Sabrent Rocket 2TB" = {
+  fileSystems."/run/media/${primaryUser}/Sabrent Rocket 2TB" = {
     device = "/dev/disk/by-label/Sabrent\\x20Rocket\\x202TB";
     fsType = "ntfs3";
     options = [
@@ -46,7 +46,7 @@
     ];
   };
 
-  fileSystems."/run/media/pho3nixf1re/850 Evo" = {
+  fileSystems."/run/media/${primaryUser}/850 Evo" = {
     device = "/dev/disk/by-label/850\\x20Evo";
     fsType = "ntfs3";
     options = [
@@ -60,7 +60,7 @@
     ];
   };
 
-  fileSystems."/run/media/pho3nixf1re/WD 5000" = {
+  fileSystems."/run/media/${primaryUser}/WD 5000" = {
     device = "/dev/disk/by-label/WD\\x205000";
     fsType = "ntfs3";
     options = [
@@ -74,7 +74,7 @@
     ];
   };
 
-  fileSystems."/run/media/pho3nixf1re/OCZ Vertex4" = {
+  fileSystems."/run/media/${primaryUser}/OCZ Vertex4" = {
     device = "/dev/disk/by-label/OCZ\\x20Vertex4";
     fsType = "ntfs3";
     options = [
@@ -89,7 +89,7 @@
   };
 
   # Auto-mount other drives at boot.
-  fileSystems."/run/media/pho3nixf1re/linux-extras" = {
+  fileSystems."/run/media/${primaryUser}/linux-extras" = {
     device = "/dev/disk/by-label/linux-extras";
     fsType = "ext4";
     options = [
@@ -99,10 +99,10 @@
   };
 
   systemd.tmpfiles.rules = [
-    "z /run/media/pho3nixf1re/linux-extras 0755 pho3nixf1re users -"
+    "z /run/media/${primaryUser}/linux-extras 0755 ${primaryUser} users -"
   ];
 
-  networking.hostName = "pho3nixf1re-nixos";
+  networking.hostName = "${primaryUser}-nixos";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -203,15 +203,15 @@
     '';
     extraRules = [
       {
-        users = [ "pho3nixf1re" ];
+        users = [ primaryUser ];
         commands = [
           # Allows SMB mounts, see `modules/home/feliciterra-fileshares.nix`
           {
-            command = "/run/wrappers/bin/mount -t cifs //10.0.0.105/feliciterra-storage /home/pho3nixf1re/mnt/feliciterra *";
+            command = "/run/wrappers/bin/mount -t cifs //10.0.0.105/feliciterra-storage /home/${primaryUser}/mnt/feliciterra *";
             options = [ "NOPASSWD" ];
           }
           {
-            command = "/run/wrappers/bin/umount /home/pho3nixf1re/mnt/feliciterra";
+            command = "/run/wrappers/bin/umount /home/${primaryUser}/mnt/feliciterra";
             options = [ "NOPASSWD" ];
           }
         ];
