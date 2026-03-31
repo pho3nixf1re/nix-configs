@@ -13,7 +13,7 @@
   nixpkgs.config.allowUnfree = true;
 
   # This is needed to support Netskope MITM interception.
-  nix.settings.ssl-cert-file = "~/.config/ssl/nscacert.pem";
+  nix.settings.ssl-cert-file = "/Users/mturney/.config/ssl/nscacert.pem";
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
