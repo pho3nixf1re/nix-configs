@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ../../modules/home/flatpak-apps.nix
+  ];
+
   # SteamOS uses fixed 'deck' username.
   home.username = "deck";
   home.homeDirectory = "/home/deck";

@@ -21,6 +21,9 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-flatpak = {
+      url = "github:gmodena/nix-flatpak/?ref=latest";
+    };
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -50,6 +53,7 @@
       home-manager,
       plasma-manager,
       sops-nix,
+      nix-flatpak,
       nix-darwin,
       nix-homebrew,
       homebrew-core,
@@ -114,6 +118,8 @@
             ./modules/system/store-cleanup.nix
             ./modules/system/vr.nix
             ./modules/system/utils.nix
+            nix-flatpak.nixosModules.nix-flatpak
+            ./modules/system/flatpak-apps.nix
             ./modules/system/wireless-ap
             ./modules/system/wired-vr-router
             sops-nix.nixosModules.sops
@@ -149,6 +155,7 @@
           localstackPkgs = makeLocalstackPkgs deckPkgs.stdenv.hostPlatform.system;
         };
         modules = [
+          nix-flatpak.homeManagerModules.nix-flatpak
           plasma-manager.homeModules.plasma-manager
           sops-nix.homeManagerModules.sops
           ./hosts/steam-deck/home.nix
