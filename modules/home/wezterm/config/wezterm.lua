@@ -9,9 +9,9 @@ end
 
 function scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
-		return "Builtin Solarized Dark"
+		return "Solarized Dark (Gogh)"
 	else
-		return "Builtin Solarized Light"
+		return "Solarized Light (Gogh)"
 	end
 end
 
