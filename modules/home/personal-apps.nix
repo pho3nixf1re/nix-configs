@@ -7,6 +7,6 @@
     libreoffice
     discord
     element-desktop
-    protonvpn-gui
+    proton-vpn
   ];
 }
