@@ -42,8 +42,10 @@
     trailingComma = "es5";
   };
 
-  # Combined CA certificate created with Netskope.
-  home.sessionVariables.SSL_CERT_FILE = "${config.xdg.configHome}/ssl/nscacert.pem";
+  # Combined CA certificate created with Netskope must exist in a variety of session variables.
+  home.sessionVariables._NS_COMBINED_CERT = "${config.xdg.configHome}/ssl/nscacert.pem";
+
+  xdg.configFile."zsh/conf.d/setup-certs.zsh".source = ./setup-certs.zsh;
 
   # wget needs to use combined cert from Netskope.
   home.file.".wgetrc".text = ''
