@@ -1,4 +1,9 @@
 {
+  pkgs,
+  ...
+}:
+
+{
   imports = [
     ../modules/home/base.nix
     ../modules/home/zsh/zsh.nix
@@ -14,6 +19,10 @@
     ../modules/home/cvent/cvent.nix
     ../modules/home/mise/mise.nix
     ../modules/home/canvas-compilation-libraries/default.nix
+  ];
+
+  home.packages = with pkgs; [
+    jetbrains.datagrip
   ];
 
   home.username = "mturney";
