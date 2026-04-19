@@ -1,16 +1,34 @@
 nix-update() {
+  local update_latest=0
   local update_system=0
+  local update_homebrew=0
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --system) update_system=1; shift ;;
+      --latest)   update_latest=1;   shift ;;
+      --system)   update_system=1;   shift ;;
+      --homebrew) update_homebrew=1; shift ;;
       *) echo "Unknown option: $1" >&2; return 1 ;;
     esac
   done
 
-  if [[ $update_system -eq 1 ]]; then
-    nix flake update nixpkgs --flake "$NIX_FLAKE_PATH"
-  else
+  # Default to --latest if no flags given
+  if [[ $update_latest -eq 0 && $update_system -eq 0 && $update_homebrew -eq 0 ]]; then
+    update_latest=1
+  fi
+
+  if [[ $update_latest -eq 1 ]]; then
+    echo "Updating nixpkgs-latest (apps, home-manager packages)..."
     nix flake update nixpkgs-latest --flake "$NIX_FLAKE_PATH"
+  fi
+
+  if [[ $update_system -eq 1 ]]; then
+    echo "Updating nixpkgs (system channel: kernel, Plasma)..."
+    nix flake update nixpkgs --flake "$NIX_FLAKE_PATH"
+  fi
+
+  if [[ $update_homebrew -eq 1 ]]; then
+    echo "Updating homebrew-core and homebrew-cask..."
+    nix flake update homebrew-core homebrew-cask --flake "$NIX_FLAKE_PATH"
   fi
 }
 
