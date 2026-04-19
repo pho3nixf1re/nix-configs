@@ -2,28 +2,28 @@
   description = "NixOS configuration";
 
   inputs = {
+    # System channel — updated deliberately (kernel, Plasma, system-level packages)
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Application channel — updated frequently (HM packages, apps, devShells)
+    nixpkgs-latest.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
-      # The `follows` keyword in inputs is used for inheritance.
-      # Here, `inputs.nixpkgs` of home-manager is kept consistent with
-      # the `inputs.nixpkgs` of the current flake,
-      # to avoid problems caused by different versions of nixpkgs.
-      inputs.nixpkgs.follows = "nixpkgs";
+      # home-manager follows the fast channel so HM packages stay current
+      inputs.nixpkgs.follows = "nixpkgs-latest";
     };
     import-tree.url = "github:vic/import-tree";
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-latest";
       inputs.home-manager.follows = "home-manager";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-latest";
     };
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-latest";
     };
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
@@ -43,6 +43,7 @@
   outputs =
     {
       nixpkgs,
+      nixpkgs-latest,
       home-manager,
       plasma-manager,
       sops-nix,
@@ -53,7 +54,7 @@
       ...
     }:
     let
-      deckPkgs = import nixpkgs {
+      deckPkgs = import nixpkgs-latest {
         system = "x86_64-linux";
         config.allowUnfree = true;
       };
@@ -85,15 +86,25 @@
           specialArgs = {
             inherit primaryUser;
             sopsAgeKeyFile = primaryUserSopsAgeKeyFile;
+            # Available in any system module for packages that need to be on
+            # the latest channel (e.g. a driver not yet in the pinned system
+            # channel).
+            pkgsLatest = import nixpkgs-latest {
+              system = "x86_64-linux";
+              config.allowUnfree = true;
+            };
           };
           modules = [
-            { nixpkgs.overlays = [ localstackFixOverlay ]; }
             (
               { pkgs, ... }:
               {
                 home-manager.extraSpecialArgs = {
                   inherit primaryUser;
                   sopsAgeKeyFile = primaryUserSopsAgeKeyFile;
+                  # pkgsSystem gives HM modules access to the slow-pinned system
+                  # channel. Use this for packages that must match the running
+                  # system (e.g. kdePackages — Konsole/Yakuake must match Plasma).
+                  pkgsSystem = pkgs;
                 };
               }
             )
@@ -107,7 +118,10 @@
             sops-nix.nixosModules.sops
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
+              # useGlobalPkgs = false so HM evaluates its own nixpkgs instance
+              # from the nixpkgs-latest channel (via home-manager's follows),
+              # keeping apps up-to-date independently of the pinned system channel.
+              home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
               home-manager.sharedModules = [
@@ -118,6 +132,12 @@
                 ${primaryUser} =
                   { ... }:
                   {
+                    nixpkgs = {
+                      config.allowUnfree = true;
+                      # localstackFixOverlay applies here in HM where localstack lives,
+                      # rather than at the system level.
+                      overlays = [ localstackFixOverlay ];
+                    };
                     imports = [
                       ./hosts/pho3nixf1re-nixos/home.nix
                       ./profiles/personal.nix
@@ -199,10 +219,20 @@
       };
 
       devShells =
-        nixpkgs.lib.genAttrs [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" "aarch64-linux" ]
+        nixpkgs-latest.lib.genAttrs [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" "aarch64-linux" ]
           (system: {
-            database-tools = (import ./modules/shells/database-tools.nix { inherit nixpkgs system; });
-            iterm-automation = (import ./modules/shells/iterm-automation.nix { inherit nixpkgs system; });
+            database-tools = (
+              import ./modules/shells/database-tools.nix {
+                nixpkgs = nixpkgs-latest;
+                inherit system;
+              }
+            );
+            iterm-automation = (
+              import ./modules/shells/iterm-automation.nix {
+                nixpkgs = nixpkgs-latest;
+                inherit system;
+              }
+            );
           });
     };
 }

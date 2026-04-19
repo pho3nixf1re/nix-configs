@@ -1,5 +1,6 @@
 {
   pkgs,
+  pkgsSystem ? pkgs,
   config,
   lib,
   ...
@@ -12,9 +13,10 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    kdePackages.konsole
-    kdePackages.yakuake
+  # KDE packages must match the Plasma version installed by the system channel.
+  home.packages = with pkgsSystem.kdePackages; [
+    konsole
+    yakuake
   ];
 
   services.kdeconnect = {
@@ -35,7 +37,7 @@ in
       Name=Yakuake
       GenericName=Drop-down Terminal
       Comment=A drop-down terminal emulator based on KDE Konsole technology.
-      Exec=${pkgs.kdePackages.yakuake}/bin/yakuake
+      Exec=${pkgsSystem.kdePackages.yakuake}/bin/yakuake
       Icon=yakuake
       Categories=Qt;KDE;System;TerminalEmulator;
       Terminal=false

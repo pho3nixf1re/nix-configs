@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgsKernel,
   primaryUser,
   sopsAgeKeyFile,
   ...

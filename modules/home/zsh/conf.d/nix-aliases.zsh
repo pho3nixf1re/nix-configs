@@ -1,5 +1,17 @@
 nix-update() {
-  nix flake update --flake "$NIX_FLAKE_PATH"
+  local update_system=0
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --system) update_system=1; shift ;;
+      *) echo "Unknown option: $1" >&2; return 1 ;;
+    esac
+  done
+
+  if [[ $update_system -eq 1 ]]; then
+    nix flake update nixpkgs --flake "$NIX_FLAKE_PATH"
+  else
+    nix flake update nixpkgs-latest --flake "$NIX_FLAKE_PATH"
+  fi
 }
 
 # nix-dev function to support arguments like: nix-dev database-tools --command zsh
