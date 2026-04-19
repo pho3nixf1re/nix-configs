@@ -17,8 +17,8 @@ nix-update() {
   fi
 
   if [[ $update_latest -eq 1 ]]; then
-    echo "Updating nixpkgs-latest (apps, home-manager packages)..."
-    nix flake update nixpkgs-latest --flake "$NIX_FLAKE_PATH"
+    echo "Updating nixpkgs-latest and home-manager (apps, home-manager packages)..."
+    nix flake update nixpkgs-latest home-manager --flake "$NIX_FLAKE_PATH"
   fi
 
   if [[ $update_system -eq 1 ]]; then
