@@ -17,6 +17,7 @@
     ../modules/home/containers/containers.nix
     ../modules/home/1password/1password.nix
     ../modules/home/cvent/cvent.nix
+    ../modules/home/lazygit/lazygit.nix
     ../modules/home/mise/mise.nix
     ../modules/home/canvas-compilation-libraries/default.nix
   ];

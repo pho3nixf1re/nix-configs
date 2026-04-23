@@ -15,6 +15,7 @@
     ../modules/home/neovim/neovim.nix
     ../modules/home/git/git.nix
     ../modules/home/containers/containers.nix
+    ../modules/home/lazygit/lazygit.nix
     ../modules/home/mise/mise.nix
     ../modules/home/ssh/ssh.nix
     ../modules/home/zsh/zsh.nix
