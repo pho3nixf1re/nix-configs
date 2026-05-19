@@ -73,5 +73,5 @@ in
 
   system.keyboard = {
     remapCapsLockToEscape = true;
-  }
+  };
 }
