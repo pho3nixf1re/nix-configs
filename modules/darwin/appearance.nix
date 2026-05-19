@@ -70,4 +70,8 @@ in
       ApplePressAndHoldEnabled = false;
     };
   };
+
+  system.keyboard = {
+    remapCapsLockToEscape = true;
+  }
 }
