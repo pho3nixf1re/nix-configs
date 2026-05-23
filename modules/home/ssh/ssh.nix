@@ -7,7 +7,7 @@
       "~/.ssh/config.d/*"
     ];
 
-    matchBlocks = {
+    settings = {
       "*" = {
         forwardAgent = false;
         addKeysToAgent = "no";
