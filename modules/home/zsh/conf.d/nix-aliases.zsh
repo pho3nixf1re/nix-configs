@@ -2,17 +2,37 @@ nix-update() {
   local update_latest=0
   local update_system=0
   local update_homebrew=0
+  local update_darwin=0
   while [[ $# -gt 0 ]]; do
     case "$1" in
+      -h|--help)
+        cat << EOF
+Usage: nix-update [OPTIONS]
+
+Update flake inputs for nix configurations.
+
+OPTIONS:
+  --latest      Update nixpkgs-latest and home-manager (apps, home-manager packages)
+  --system      Update nixpkgs (system channel: kernel, Plasma)
+  --homebrew    Update homebrew-core, homebrew-cask, and nix-homebrew
+  --darwin      Update nix-darwin
+  -h, --help    Show this help message
+
+If no options are specified, defaults to --latest.
+Multiple options can be combined: nix-update --latest --darwin
+EOF
+        return 0
+        ;;
       --latest)   update_latest=1;   shift ;;
       --system)   update_system=1;   shift ;;
       --homebrew) update_homebrew=1; shift ;;
+      --darwin)   update_darwin=1;   shift ;;
       *) echo "Unknown option: $1" >&2; return 1 ;;
     esac
   done
 
   # Default to --latest if no flags given
-  if [[ $update_latest -eq 0 && $update_system -eq 0 && $update_homebrew -eq 0 ]]; then
+  if [[ $update_latest -eq 0 && $update_system -eq 0 && $update_homebrew -eq 0 && $update_darwin -eq 0 ]]; then
     update_latest=1
   fi
 
@@ -27,8 +47,13 @@ nix-update() {
   fi
 
   if [[ $update_homebrew -eq 1 ]]; then
-    echo "Updating homebrew-core and homebrew-cask..."
-    nix flake update homebrew-core homebrew-cask --flake "$NIX_FLAKE_PATH"
+    echo "Updating homebrew-core, homebrew-cask, and nix-homebrew..."
+    nix flake update homebrew-core homebrew-cask nix-homebrew --flake "$NIX_FLAKE_PATH"
+  fi
+
+  if [[ $update_darwin -eq 1 ]]; then
+    echo "Updating nix-darwin..."
+    nix flake update nix-darwin --flake "$NIX_FLAKE_PATH"
   fi
 }
 
