@@ -17,6 +17,10 @@
     shellcheck
     shfmt
 
+    # JavaScript/TypeScript tooling.
+    oxfmt
+    oxlint
+
     # General development tools and utilities.
     serve
 
