@@ -47,11 +47,12 @@
     with pkgs;
     [
       # General CLI tools.
-      ripgrep
-      jq
-      nnn
-      tree
-      eza
+      ripgrep # A fast search tool for the terminal, `rg`.
+      jq # For processing JSON data in the terminal.
+      nnn # A terminal file manager.
+      tree # For visualizing directory structures.
+      eza # A modern replacement for ls.
+      gum # For interactive CLI prompts.
 
       # Process monitoring tools.
       htop
