@@ -11,6 +11,8 @@
       # home-manager follows the fast channel so HM packages stay current
       inputs.nixpkgs.follows = "nixpkgs-latest";
     };
+    # See https://github.com/nix-community/nixpkgs-xr
+    nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     import-tree.url = "github:vic/import-tree";
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
@@ -45,6 +47,7 @@
       nixpkgs,
       nixpkgs-latest,
       home-manager,
+      nixpkgs-xr,
       plasma-manager,
       sops-nix,
       nix-darwin,
@@ -108,6 +111,7 @@
                 };
               }
             )
+            nixpkgs-xr.nixosModules.nixpkgs-xr
             ./hosts/pho3nixf1re-nixos/configuration.nix
             ./modules/system/common.nix
             ./modules/system/store-cleanup.nix
