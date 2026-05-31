@@ -75,4 +75,10 @@ in
     source = ./conf.d;
     recursive = true;
   };
+
+  # Automatically load zsh environment to nix shells.
+  programs.nix-your-shell = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 }
