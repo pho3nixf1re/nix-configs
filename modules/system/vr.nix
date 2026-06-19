@@ -27,10 +27,13 @@
     # WayVR: Virtual Desktop-style desktop overlay inside VR
     # Run with: steam-run wayvr (required on NixOS due to Steam FHS sandbox)
     wayvr # from nixpkgs-xr overlay
-
-    # Proton GE builds with OpenXR runtime support, for running SteamVR-only
-    # titles via WiVRn/Monado. Includes low-latency patches relevant to VR
-    # streaming.
-    proton-ge-rtsp-bin
   ];
+
+  # Proton GE builds with OpenXR runtime support, for running SteamVR-only
+  # titles via WiVRn/Monado. Includes low-latency patches relevant to VR
+  # streaming. This must be registered as a Steam compatibility tool rather
+  # than added to environment.systemPackages, since the package is a single
+  # file (not a directory tree) and cannot be merged into the system path by
+  # pkgs.buildEnv.
+  programs.steam.extraCompatPackages = [ pkgs.proton-ge-rtsp-bin ];
 }
