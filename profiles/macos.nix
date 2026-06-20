@@ -14,6 +14,7 @@
     ../modules/home/git/git.nix
     ../modules/home/neovim/neovim.nix
     ../modules/home/dev.nix
+    ../modules/home/personal-apps.nix
     ../modules/home/containers/containers.nix
     ../modules/home/1password/1password.nix
     ../modules/home/lazygit/lazygit.nix
