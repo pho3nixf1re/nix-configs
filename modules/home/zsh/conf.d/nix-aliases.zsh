@@ -82,7 +82,13 @@ nix-apply() {
       echo "Error: --${mode} is only supported on NixOS" >&2
       return 1
     fi
-    sudo darwin-rebuild switch --flake "$NIX_FLAKE_PATH#cvent-macos"
+    local darwin_host
+    case "$USER" in
+      pho3nixf1re) darwin_host="pho3nixf1re-macos" ;;
+      mturney)     darwin_host="cvent-macos" ;;
+      *) echo "Error: no Darwin config for user '$USER'" >&2; return 1 ;;
+    esac
+    sudo darwin-rebuild switch --flake "$NIX_FLAKE_PATH#${darwin_host}"
   elif command -v nixos-rebuild &> /dev/null; then
     sudo nixos-rebuild "$mode" --flake "$NIX_FLAKE_PATH#pho3nixf1re-nixos"
   elif grep -qi "steamos" /etc/os-release 2>/dev/null; then

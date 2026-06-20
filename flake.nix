@@ -167,6 +167,57 @@
       };
 
       darwinConfigurations = {
+        pho3nixf1re-macos = nix-darwin.lib.darwinSystem {
+          modules = [
+            nix-homebrew.darwinModules.nix-homebrew
+            ./hosts/pho3nixf1re-macos/configuration.nix
+            ./modules/darwin/macos-apps.nix
+            ./modules/darwin/appearance.nix
+            ./modules/darwin/store-cleanup.nix
+            ./modules/system/common.nix
+            home-manager.darwinModules.home-manager
+            {
+              nix-homebrew = {
+                enable = true;
+
+                # Apple Silicon backwards compatibility: Also install Homebrew
+                # under the default Intel prefix for Rosetta 2.
+                enableRosetta = true;
+
+                user = "pho3nixf1re";
+
+                # Automatically migrate existing Homebrew installations.
+                autoMigrate = true;
+
+                # Declarative tap management
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                };
+              };
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
+              home-manager.sharedModules = [
+                sops-nix.homeManagerModules.sops
+              ];
+              home-manager.users.pho3nixf1re = {
+                imports = [
+                  ./profiles/common.nix
+                  ./profiles/macos.nix
+                ];
+              };
+            }
+            # Align homebrew taps config with nix-homebrew
+            (
+              { config, ... }:
+              {
+                homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
+              }
+            )
+          ];
+        };
+
         cvent-macos = nix-darwin.lib.darwinSystem {
           modules = [
             {

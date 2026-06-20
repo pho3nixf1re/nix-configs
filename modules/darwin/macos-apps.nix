@@ -23,7 +23,6 @@
       "switchhosts"
 
       "dbeaver-community"
-      "tableplus"
     ];
 
     masApps = {
