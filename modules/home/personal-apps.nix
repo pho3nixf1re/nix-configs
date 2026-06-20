@@ -4,9 +4,10 @@
   programs.element-desktop.enable = true;
 
   home.packages = with pkgs; [
-    libreoffice
     discord
     element-desktop
     proton-vpn
+  ] ++ lib.optionals (pkgs.stdenv.isLinux) [
+    libreoffice
   ];
 }
