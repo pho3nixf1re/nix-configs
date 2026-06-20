@@ -34,13 +34,13 @@
       "Gifski" = 1351639930;
       "iMovie" = 408981434;
       "Keka" = 470158793;
-      "Keynote" = 409183694;
+      "WireGuard" = 1451685025;
+      "Keynote" = 361285480;
       "Magnet" = 441258766;
       "Microsoft Remote Desktop" = 1295203466;
-      "Numbers" = 409203825;
-      "Pages" = 409201541;
+      "Numbers" = 361304891;
+      "Pages" = 361309726;
       "Pixelmator Pro" = 1289583905;
-      "Slack" = 803453959;
       "WiFi Explorer" = 494803304;
       "Xcode" = 497799835;
     };
