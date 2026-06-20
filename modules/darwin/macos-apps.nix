@@ -10,6 +10,8 @@
       "1password"
       "1password-cli"
 
+      "claude"
+
       "alfred"
       "bartender"
       "steermouse"
