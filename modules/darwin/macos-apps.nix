@@ -34,7 +34,6 @@
       "Gifski" = 1351639930;
       "iMovie" = 408981434;
       "Keka" = 470158793;
-      "WireGuard" = 1451685025;
       "Keynote" = 361285480;
       "Magnet" = 441258766;
       "Microsoft Remote Desktop" = 1295203466;
