@@ -12,11 +12,11 @@ Usage: nix-update [OPTIONS]
 Update flake inputs for nix configurations.
 
 OPTIONS:
-  --latest      Update nixpkgs-latest and home-manager (apps, home-manager packages)
-  --system      Update nixpkgs (system channel: kernel, Plasma)
-  --homebrew    Update homebrew-core, homebrew-cask, and nix-homebrew
-  --darwin      Update nix-darwin
-  -h, --help    Show this help message
+   --latest      Update nixpkgs-latest, home-manager, and nixpkgs-xr (apps, VR packages)
+   --system      Update nixpkgs (system channel: kernel, Plasma)
+   --homebrew    Update homebrew-core, homebrew-cask, and nix-homebrew
+   --darwin      Update nix-darwin
+   -h, --help    Show this help message
 
 If no options are specified, defaults to --latest.
 Multiple options can be combined: nix-update --latest --darwin
@@ -37,8 +37,8 @@ EOF
   fi
 
   if [[ $update_latest -eq 1 ]]; then
-    echo "Updating nixpkgs-latest and home-manager (apps, home-manager packages)..."
-    nix flake update nixpkgs-latest home-manager --flake "$NIX_FLAKE_PATH"
+    echo "Updating nixpkgs-latest, home-manager, and nixpkgs-xr (apps, VR packages)..."
+    nix flake update nixpkgs-latest home-manager nixpkgs-xr --flake "$NIX_FLAKE_PATH"
   fi
 
   if [[ $update_system -eq 1 ]]; then
