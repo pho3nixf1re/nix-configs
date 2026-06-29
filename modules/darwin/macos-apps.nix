@@ -13,8 +13,8 @@
       "claude"
 
       "alfred"
-      "bartender"
-      "steermouse"
+      # "bartender"
+      # "steermouse"
 
       "airfoil"
       "qobuz"
@@ -25,6 +25,10 @@
       "switchhosts"
 
       "dbeaver-community"
+<<<<<<< Updated upstream
+=======
+      # "tableplus"
+>>>>>>> Stashed changes
     ];
 
     masApps = {
