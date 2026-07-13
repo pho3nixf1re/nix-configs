@@ -25,10 +25,7 @@
       "switchhosts"
 
       "dbeaver-community"
-<<<<<<< Updated upstream
-=======
-      # "tableplus"
->>>>>>> Stashed changes
+      "tableplus"
     ];
 
     masApps = {
