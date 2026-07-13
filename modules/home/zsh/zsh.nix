@@ -17,6 +17,8 @@ in
 
     sessionVariables = {
       NIX_FLAKE_PATH = "$HOME/nix-configs";
+      PATH = "$HOME/.local/bin:$PATH";
+      PNPM_HOME = "$HOME/.local/bin";
     };
 
     shellAliases = {
