@@ -43,7 +43,10 @@
   };
 
   # Combined CA certificate created with Netskope must exist in a variety of session variables.
-  home.sessionVariables._NS_COMBINED_CERT = "${config.xdg.configHome}/ssl/nscacert.pem";
+  home.sessionVariables = {
+    _NS_COMBINED_CERT = "${config.xdg.configHome}/ssl/nscacert.pem";
+    PATH = "$HOME/.cargo/bin:$PATH";
+  };
 
   xdg.configFile."zsh/conf.d/setup-certs.zsh".source = ./setup-certs.zsh;
 
