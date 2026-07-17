@@ -16,6 +16,7 @@
     autoStart = false;
     openFirewall = true;
     steam.importOXRRuntimes = true;
+    package = pkgs.wivrn;
 
     # Configuration to be set once I have it figured out. See: https://mynixos.com/nixpkgs/option/services.wivrn.config.json
     # config = {

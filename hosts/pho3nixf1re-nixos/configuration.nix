@@ -17,7 +17,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_6_19;
+  boot.kernelPackages = pkgs.linuxPackages_7_1;
 
   # Prevents warning when running `nixos-rebuild switch`. See:
   # - https://github.com/NixOS/nix/issues/11728
