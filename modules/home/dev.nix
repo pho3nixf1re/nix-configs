@@ -8,6 +8,7 @@
     nodejs
     python3
     python3.pkgs.pip
+    uv
 
     # Nix development tools.
     nixfmt
