@@ -27,6 +27,14 @@
   ];
 
   programs.firefox.enable = true;
+  programs.chromium = {
+    enable = true;
+    # TODO: add hosts for Plasma integration
+    # nativeMessagingHosts = [];
+    extensions = [
+      { id = "fuoeoabgfenejglbffodgkkbkcdhcgfn"; } # Claude
+     ];
+  };
 
   programs.claude-code = {
     enable = true;
