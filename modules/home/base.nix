@@ -63,6 +63,7 @@
       httpie
       curl
       wget
+      sshfs
 
       # Needed for OH-MY-ZSH plugins.
       autojump
