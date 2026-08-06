@@ -8,11 +8,10 @@
     casks = [
       # Used by Claude Co-work and other automation tools.
       "google-chrome"
+
       "firefox"
       "1password"
       "1password-cli"
-
-      "claude"
 
       "alfred"
       # "bartender"
