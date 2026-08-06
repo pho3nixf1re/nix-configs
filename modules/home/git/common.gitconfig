@@ -2,6 +2,7 @@
   name = Matthew Turney
   email = pho3nixf1re@proton.me
   useconfigonly = true
+  signingkey = ~/.ssh/github.pub
 [core]
   filemode = true
   logallrefupdates = true
@@ -39,6 +40,8 @@
   gpgsign = true
 [gpg]
   format = ssh
+[gpg "ssh"]
+  allowedSignersFile = ~/.config/git/allowed_signers
 [stash]
   showPatch = true
 [diff]

@@ -4,6 +4,9 @@
   lib,
   ...
 }:
+let
+  cventPubKey = lib.strings.trim (builtins.readFile ./cvent.pub);
+in
 
 {
   # Gitconfig for Cvent work points ssh command to this file.
@@ -12,6 +15,9 @@
 
   xdg.configFile = {
     "git/cvent.gitconfig".source = ./cvent.gitconfig;
+    "git/allowed_signers".text = lib.mkAfter ''
+      mturney@cvent.com ${cventPubKey}
+    '';
   };
 
   programs.git.settings = {

@@ -4,9 +4,15 @@
   config,
   ...
 }:
+let
+  githubPubKey = builtins.readFile ../ssh/public-keys/github.pub;
+in
 {
   xdg.configFile = {
     "git/common.gitconfig".source = ./common.gitconfig;
+    "git/allowed_signers".text = ''
+      pho3nixf1re@proton.me ${githubPubKey}
+    '';
   };
 
   # Add git aliases to zsh if enabled.
