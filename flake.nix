@@ -274,6 +274,7 @@
         };
       };
 
+      # Run these shells with `nix develop`
       devShells =
         nixpkgs-latest.lib.genAttrs [ "x86_64-darwin" "aarch64-darwin" "x86_64-linux" "aarch64-linux" ]
           (system: {
@@ -285,6 +286,12 @@
             );
             iterm-automation = (
               import ./modules/shells/iterm-automation.nix {
+                nixpkgs = nixpkgs-latest;
+                inherit system;
+              }
+            );
+            bun = (
+              import ./modules/shells/bun.nix {
                 nixpkgs = nixpkgs-latest;
                 inherit system;
               }

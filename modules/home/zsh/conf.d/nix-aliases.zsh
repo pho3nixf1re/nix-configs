@@ -59,6 +59,21 @@ EOF
 
 # nix-dev function to support arguments like: nix-dev database-tools --command zsh
 nix-dev() {
+  if [[ $# -eq 0 ]]; then
+    local system
+    system="$(nix eval --impure --raw --expr builtins.currentSystem 2>/dev/null)" || {
+      echo "Error: unable to determine current Nix system" >&2
+      return 1
+    }
+
+    echo "Available dev shells for ${system}:"
+    if ! nix eval --raw "$NIX_FLAKE_PATH#devShells.${system}" --apply 'shells: builtins.concatStringsSep "\n" (builtins.attrNames shells)'; then
+      echo "(none found)"
+      return 1
+    fi
+    return 0
+  fi
+
   local flake_ref="$1"
   shift
   nix develop "$NIX_FLAKE_PATH#$flake_ref" "$@"
