@@ -3,6 +3,8 @@
     brews = [
       # Install zsh here as other programs expect it to be in Homebrew.
       "zsh"
+
+      "circleci"
     ];
 
     casks = [

@@ -25,8 +25,6 @@ in
   };
 
   home.packages = with pkgs; [
-    circleci-cli
-
     # Local development environment dependencies.
     poppler
     vips
