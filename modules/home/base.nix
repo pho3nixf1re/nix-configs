@@ -79,11 +79,11 @@
       # with more detailed log output.
       nix-output-monitor
     ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       # Linux-only as MacOS has osxkeychain built-in.
       pkgs.git-credential-manager
     ]
-    ++ lib.optionals pkgs.stdenv.isDarwin [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
       pkgs.pinentry_mac
     ];
 }

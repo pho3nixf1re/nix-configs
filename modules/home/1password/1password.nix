@@ -19,7 +19,7 @@ in
   home.file.".1password/.keep".text = "";
 
   # Create symlink on macOS from MacOS-specific socket to common location.
-  home.activation.link1PasswordSocket = lib.mkIf pkgs.stdenv.isDarwin (
+  home.activation.link1PasswordSocket = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
     lib.hm.dag.entryAfter ["writeBoundary"] ''
       $DRY_RUN_CMD rm -f ${agentSock}
       $DRY_RUN_CMD ln -sf ${lib.escapeShellArg macosAgentSock} ${agentSock}

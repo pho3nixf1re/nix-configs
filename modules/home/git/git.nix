@@ -44,14 +44,14 @@ in
       }
 
       # Linux-specific config
-      (lib.mkIf pkgs.stdenv.isLinux {
+      (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         credential.helper = "/run/current-system/sw/bin/git-credential-manager";
         credential.credentialStore = "secretservice";
         merge.tool = "vim";
       })
 
       # MacOS-specific config
-      (lib.mkIf pkgs.stdenv.isDarwin {
+      (lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
         gpg.ssh.program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign";
       })
     ];
