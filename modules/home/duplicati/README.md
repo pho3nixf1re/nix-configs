@@ -1,15 +1,15 @@
 # Duplicati Backup Module
 
-A home-manager module for running [Duplicati](https://www.duplicati.com/) as a user-level service. This module is designed to work on both NixOS and non-NixOS systems (like SteamOS).
+A home-manager module for running [Duplicati](https://www.duplicati.com/) as a user-level service. This module works on NixOS, non-NixOS Linux (like SteamOS), and macOS (via nix-darwin).
 
 ## Features
 
-- **User-level systemd service** - Runs in user context, no system privileges required
-- **Desktop-only auto-start** - Automatically starts only in graphical sessions (`graphical-session.target`)
+- **User-level service** - Runs in user context via systemd (Linux) or launchd (macOS), no system privileges required
+- **Desktop-only auto-start** - Automatically starts only in graphical sessions (`graphical-session.target` on Linux, `gui` launchd domain on macOS)
 - **Configurable web UI port** - Default 8200, easily overridable per-host
 - **Automatic backup directory creation** - Creates `~/mnt/feliciterra/backups/<hostname>` for backup storage
-- **SMB mount integration** - Optionally waits for SMB mounts before starting
-- **Cross-platform hostname detection** - Uses `config.networking.hostName` on NixOS, falls back to `$HOSTNAME` environment variable
+- **SMB mount integration** - Optionally waits for SMB mounts before starting (Linux only)
+- **Cross-platform hostname detection** - Uses `config.networking.hostName` on NixOS, falls back to `$HOSTNAME` environment variable (Linux only)
 
 ## Configuration Options
 
@@ -20,6 +20,8 @@ services.duplicati = {
   port = 8200;  # Web UI port (default: 8200)
 
   dataDir = ".local/share/duplicati";  # Duplicati data directory (relative to ~)
+
+  trayIcon = true;  # Menu bar icon (macOS) / system tray icon (Linux), default: false
 
   backupBasePath = "mnt/feliciterra/backups";  # Base path for backups (relative to ~)
 };
@@ -96,9 +98,27 @@ http://localhost:8200
 
 (Or whatever port you configured)
 
+### Web UI Password
+
+Duplicati **requires** a web UI password. Since this module does not set one, the server generates a random password on first start and logs a one-time sign-in link:
+
+```bash
+# Linux
+journalctl --user -u duplicati | grep signin
+
+# macOS
+grep signin ~/Library/Logs/duplicati.log
+```
+
+The sign-in link is only valid for a few minutes after the server starts — restart the service to get a fresh one. After signing in, set your own password under **Settings → Remote access**; it is stored in the server database (`<dataDir>/Duplicati-server.sqlite`) and persists across restarts.
+
+Alternative sign-in methods:
+- **Tray icon** (if `services.duplicati.trayIcon = true`): the icon's **Open** menu item opens the web UI with a fresh sign-in token — no password needed. The tray icon authenticates automatically by reading the connection info from the server database (`--read-config-from-db`).
+- **Command line**: `duplicati-server-util change-password <new-password>` (run with the service stopped and `--server-datafolder <dataDir>`; it authenticates against a running server with `--password`).
+
 ## Service Management
 
-### Start/Stop/Status
+### Linux (systemd)
 
 ```bash
 # Check service status
@@ -115,6 +135,22 @@ systemctl --user restart duplicati
 
 # View logs
 journalctl --user -u duplicati -f
+```
+
+### macOS (launchd)
+
+```bash
+# Check service status
+launchctl print "gui/$(id -u)/org.nix-community.home.duplicati"
+
+# Stop service (boots out until next login)
+launchctl bootout "gui/$(id -u)/org.nix-community.home.duplicati"
+
+# Start/restart service
+launchctl kickstart "gui/$(id -u)/org.nix-community.home.duplicati"
+
+# View logs
+tail -f ~/Library/Logs/duplicati.log ~/Library/Logs/duplicati.err.log
 ```
 
 ### Disable Auto-Start
@@ -185,19 +221,33 @@ The Duplicati service will automatically wait for `smb-mount-feliciterra.service
 - All data stored in `~/.local/share/` (persistent across SteamOS updates)
 - SMB mounts must be set up separately if using network storage
 
+### macOS (nix-darwin)
+
+- Runs as a launchd LaunchAgent (`~/Library/LaunchAgents/org.nix-community.home.duplicati.plist`), started at login and restarted automatically on failure
+- **Apple Silicon only** — the nixpkgs `duplicati` package does not support Intel Macs (`x86_64-darwin`)
+- Optional menu bar icon via `services.duplicati.trayIcon = true` (LaunchAgent `org.nix-community.home.duplicati-tray-icon`)
+- Data stored in `~/.local/share/duplicati` (same XDG default as Linux)
+- Logs written to `~/Library/Logs/duplicati.log` and `~/Library/Logs/duplicati.err.log`
+- The `HOSTNAME` environment variable is not set on macOS (not needed by Duplicati)
+- SMB mounts are not managed by this repo on macOS — mount network storage through macOS (Finder, autofs, etc.) before using it as a backup destination
+
 ## Troubleshooting
 
 ### Service won't start
 
 Check the logs:
 ```bash
+# Linux
 journalctl --user -u duplicati -n 50
+
+# macOS
+tail -n 50 ~/Library/Logs/duplicati.err.log
 ```
 
 Common issues:
 - Backup path doesn't exist → Check if SMB mount is working
 - Port already in use → Change the port in configuration
-- Hostname not detected → Set `$HOSTNAME` environment variable
+- Hostname not detected → Set `$HOSTNAME` environment variable (Linux only)
 
 ### Can't access web UI
 
@@ -213,9 +263,27 @@ Common issues:
 
 3. Try accessing on the configured port
 
-### Hostname shows as empty
+### Forgot the web UI password / start fresh
 
-On non-NixOS systems, set the `HOSTNAME` environment variable:
+The password is stored in the server database (`<dataDir>/Duplicati-server.sqlite`). If you cannot sign in, stop the service and remove the data directory — the server then starts fresh, generates a new random password, and logs a new sign-in link (see [Web UI Password](#web-ui-password)):
+
+```bash
+# macOS
+launchctl bootout "gui/$(id -u)/org.nix-community.home.duplicati"
+rm -rf ~/.local/share/duplicati
+launchctl bootstrap "gui/$(id -u)" ~/Library/LaunchAgents/org.nix-community.home.duplicati.plist
+
+# Linux
+systemctl --user stop duplicati
+rm -rf ~/.local/share/duplicati
+systemctl --user start duplicati
+```
+
+**Warning:** this deletes all configured backup jobs and settings. Export backup configurations first (web UI → backup → Export) if you want to keep them.
+
+### Hostname shows as empty (Linux only)
+
+On non-NixOS Linux systems, set the `HOSTNAME` environment variable:
 
 ```bash
 export HOSTNAME="my-hostname"

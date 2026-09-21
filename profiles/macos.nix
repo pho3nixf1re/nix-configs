@@ -17,6 +17,7 @@
     ../modules/home/personal-apps.nix
     ../modules/home/containers/containers.nix
     ../modules/home/1password/1password.nix
+    ../modules/home/duplicati/duplicati.nix
     ../modules/home/lazygit/lazygit.nix
     ../modules/home/mise/mise.nix
   ];
@@ -25,6 +26,11 @@
 
   programs.claude-code = {
     enable = true;
+  };
+
+  services.duplicati = {
+    enable = true;
+    trayIcon = true;
   };
 
   sops = {
