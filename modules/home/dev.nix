@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgsLatest, ... }:
 
 {
   programs.vscode.enable = true;
 
-  home.packages = with pkgs; [
+  home.packages = with pkgsLatest; [
     # Development runtimes.
     nodejs
     python3

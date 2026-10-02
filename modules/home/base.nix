@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgsLatest, lib, ... }:
 
 {
   programs.fastfetch = {
@@ -44,7 +40,7 @@
   xdg.enable = true;
 
   home.packages =
-    with pkgs;
+    with pkgsLatest;
     [
       # General CLI tools.
       ripgrep # A fast search tool for the terminal, `rg`.
@@ -79,11 +75,11 @@
       # with more detailed log output.
       nix-output-monitor
     ]
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+    ++ lib.optionals pkgsLatest.stdenv.hostPlatform.isLinux [
       # Linux-only as MacOS has osxkeychain built-in.
-      pkgs.git-credential-manager
+      pkgsLatest.git-credential-manager
     ]
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
-      pkgs.pinentry_mac
+    ++ lib.optionals pkgsLatest.stdenv.hostPlatform.isDarwin [
+      pkgsLatest.pinentry_mac
     ];
 }

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgsSystem, ... }:
 
 {
   # Desktop system profile
@@ -6,8 +6,10 @@
 
   custom.display.server = "wayland";
 
-  home.packages = with pkgs; [
-    kdePackages.discover
+  # discover writes the session config the system channel's Plasma reads, so
+  # it has to come from that same channel.
+  home.packages = with pkgsSystem.kdePackages; [
+    discover
   ];
 
   imports = [

@@ -57,10 +57,24 @@
       ...
     }:
     let
-      deckPkgs = import nixpkgs-latest {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-      };
+      # The application channel. Home Manager's default `pkgs` always comes
+      # from the system channel (Plasma must match the running system), so
+      # modules opt into this channel explicitly via `pkgsLatest`.
+      mkPkgsLatest =
+        system:
+        import nixpkgs-latest {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      pkgsLatest = mkPkgsLatest "x86_64-linux";
+      deckPkgs = pkgsLatest;
+      # Hands the application channel to every host's Home Manager so shared
+      # modules can reference `pkgsLatest` regardless of the host platform.
+      hmLatestArg =
+        { pkgs, ... }:
+        {
+          home-manager.extraSpecialArgs.pkgsLatest = mkPkgsLatest pkgs.stdenv.hostPlatform.system;
+        };
       localstackFixOverlay = final: prev: {
         # plux's test suite asserts dist.metadata["License"] == "MIT" using pytest
         # as a test fixture. This broke in pytest >= 8.1, which adopted PEP 639's
@@ -92,17 +106,14 @@
             # Available in any system module for packages that need to be on
             # the latest channel (e.g. a driver not yet in the pinned system
             # channel).
-            pkgsLatest = import nixpkgs-latest {
-              system = "x86_64-linux";
-              config.allowUnfree = true;
-            };
+            inherit pkgsLatest;
           };
           modules = [
             (
               { pkgs, ... }:
               {
                 home-manager.extraSpecialArgs = {
-                  inherit primaryUser;
+                  inherit primaryUser pkgsLatest;
                   sopsAgeKeyFile = primaryUserSopsAgeKeyFile;
                   # pkgsSystem gives HM modules access to the slow-pinned system
                   # channel. Use this for packages that must match the running
@@ -157,6 +168,17 @@
 
       homeConfigurations."deck" = home-manager.lib.homeManagerConfiguration {
         pkgs = deckPkgs;
+        # The deck runs on the application channel already, but shared modules
+        # still expect the argument to be available.
+        extraSpecialArgs = {
+          pkgsLatest = deckPkgs;
+          # The deck has no separate system channel, so Plasma-matching
+          # packages come from the same pkgs the deck already runs on.
+          pkgsSystem = deckPkgs;
+          # Module arguments must be declared even when the module has a
+          # default, so mirror the default in profiles/personal.nix.
+          sopsAgeKeyFile = "/home/deck/.config/sops/age/keys.txt";
+        };
         modules = [
           plasma-manager.homeModules.plasma-manager
           sops-nix.homeManagerModules.sops
@@ -169,6 +191,7 @@
       darwinConfigurations = {
         pho3nixf1re-macos = nix-darwin.lib.darwinSystem {
           modules = [
+            hmLatestArg
             nix-homebrew.darwinModules.nix-homebrew
             ./hosts/pho3nixf1re-macos/configuration.nix
             ./modules/darwin/macos-apps.nix
@@ -221,6 +244,7 @@
 
         cvent-macos = nix-darwin.lib.darwinSystem {
           modules = [
+            hmLatestArg
             {
               nixpkgs.overlays = [ localstackFixOverlay ];
             }
