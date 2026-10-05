@@ -16,7 +16,7 @@
       "1password-cli"
 
       "alfred"
-      # "bartender"
+      "bartender"
       # "steermouse"
 
       "airfoil"
