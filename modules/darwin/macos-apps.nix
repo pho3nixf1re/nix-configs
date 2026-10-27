@@ -5,6 +5,10 @@
       "zsh"
 
       "circleci"
+
+      # On macOS opencode comes from Homebrew; Linux installs it from
+      # pkgsLatest in modules/home/dev.nix.
+      "opencode"
     ];
 
     casks = [
