@@ -75,25 +75,6 @@
         {
           home-manager.extraSpecialArgs.pkgsLatest = mkPkgsLatest pkgs.stdenv.hostPlatform.system;
         };
-      localstackFixOverlay = final: prev: {
-        # plux's test suite asserts dist.metadata["License"] == "MIT" using pytest
-        # as a test fixture. This broke in pytest >= 8.1, which adopted PEP 639's
-        # SPDX license format — moving license info to a "License-Expression" core
-        # metadata field and leaving the legacy "License" field returning None.
-        # This is a bug in plux's test, not in plux itself.
-        #
-        # PEP 639 (license metadata overhaul): https://peps.python.org/pep-0639/
-        # pytest changelog: https://github.com/pytest-dev/pytest/blob/main/CHANGELOG.rst
-        python3 = prev.python3.override {
-          packageOverrides = self: super: {
-            plux = super.plux.overrideAttrs (old: {
-              pytestFlagsArray = (old.pytestFlagsArray or [ ]) ++ [
-                "--deselect=tests/test_metadata.py::test_resolve_distribution_information"
-              ];
-            });
-          };
-        };
-      };
       primaryUser = "pho3nixf1re";
       primaryUserSopsAgeKeyFile = "/home/${primaryUser}/.config/sops/age/keys.txt";
     in
@@ -147,12 +128,7 @@
                 ${primaryUser} =
                   { ... }:
                   {
-                    nixpkgs = {
-                      config.allowUnfree = true;
-                      # localstackFixOverlay applies here in HM where localstack lives,
-                      # rather than at the system level.
-                      overlays = [ localstackFixOverlay ];
-                    };
+                    nixpkgs.config.allowUnfree = true;
                     imports = [
                       ./hosts/pho3nixf1re-nixos/home.nix
                       ./profiles/personal.nix
@@ -245,9 +221,6 @@
         cvent-macos = nix-darwin.lib.darwinSystem {
           modules = [
             hmLatestArg
-            {
-              nixpkgs.overlays = [ localstackFixOverlay ];
-            }
             nix-homebrew.darwinModules.nix-homebrew
             ./hosts/cvent-macos/configuration.nix
             ./modules/darwin/macos-apps.nix

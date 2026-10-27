@@ -49,5 +49,10 @@
       # Don't cleanup unmanaged brews.
       cleanup = "none";
     };
+    brews = [
+      # From Homebrew rather than nixpkgs: the nixpkgs package tends to break
+      # on version bumps (e.g. localstack-ext needing unpackaged build deps).
+      "localstack"
+    ];
   };
 }
